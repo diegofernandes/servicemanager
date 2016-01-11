@@ -68,7 +68,7 @@ Configuration of Meccano IoT ServiceManager is simple. You should configure the 
 
 ```
 default:
-  warning_limit: 60
+  warninglimit: 60
   scheduler:
     monitor: '*/1 * * * *'
     devices: '*/10 * * * *'
@@ -100,13 +100,15 @@ Each configuration parameter have the corresponding environment variable. They'l
 
 ### Environment variables
 
-- **WARNINGLIMIT**: the number of minutes to consider a device out of operation. It depends on your latency and monitoring needs.
+- **WARNINGLIMIT**: the number of minutes to create the device report. Every n minutes the report will be created and sent by e-mail for administrators. It depends on your monitoring needs.
 
-- **SCHEDULER_MONITOR**: this is the CRON string for configuring the monitor, the time both instances should check who is the MASTER or SLAVE. This should be 1 minute or more, depending on your configuration. Since ServiceManager is not a critical component in  Meccano IoT Architecture, it may be offline for some minutes until the SLAVE takes over the task and promote itself to MASTER.
+- **SCHEDULER_MONITOR**: this is the CRON string for configuring the monitor, the time both instances should check who is the MASTER or SLAVE. This should be 1 minute or more, depending on your configuration. Since ServiceManager is not a critical component in  Meccano IoT Architecture, it may be offline for some minutes until the SLAVE takes over the task and promote itself to MASTER. The default value is executing this check every minute.
 
-- **SCHEDULER_DEVICES**: this is the CRON string for generating the statistics of devices. It depends on your application but a good value should be 10 minutes or even a day, if you don't want to overload this component so much.
+- **SCHEDULER_DEVICES**: this is the CRON string for creating the device report. It depends on your application but a good value should be 10 minutes or even a day, if you don't want to overload this component so much. The default value is every 10 minutes.
 
-- **SCHEDULER_EXPORT**: this is the CRON schedule for exporting and purging data out of the Meccano infrastructure. The purged data may be exported to S3 bucket in order for executing Map Reduce (Hadoop) or Spark reductions or other processing for realtime analytics, BI and reports.
+- **SCHEDULER_STATISTICS**: this is the CRON string for generating the sensor statistics. The default value is every 0 hour of each day.
+
+- **SCHEDULER_EXPORT**: this is the CRON schedule for exporting and purging data out of the Meccano infrastructure. The purged data may be exported to S3 bucket in order for executing Map Reduce (Hadoop) or Spark reductions or other processing for realtime analytics, BI and reports. The default is 02:00 AM of each day.
 
 
 
@@ -117,7 +119,7 @@ For AWS Configuration you should complete the requirements:
 - Your Region (or example, sa-east-1) AWS Access and Secret Keys available.
 - An SNS Topic created, redirecting the messages to E-mail and TopicArn available.
 
-- **AWS_REGION**: is the name of your AWS Region.
+- **AWS_REGION**: is the name of your AWS Region. The default is sa-east-1.
 
 - **AWS_ACCESSKEYID**: your AWS Access Key Id.
 
@@ -149,17 +151,17 @@ The parameters bellow control the connection and behaviour of the RDBMS.
 
 The parameters bellow control the connection and behaviour of the export and purge configuration.
 
-- **EXPORT_ACTIVE**: controls if export and purge are active. De default value for this variable is **true**.
+- **EXPORT_ENABLED**: controls if export and purge are active. De default value for this variable is **true**. The data will be exported according the **SCHEDULER_EXPORT** variable.
 
 - **EXPORT_BUCKET**: the name of the bucket in the AWS S3 Service. It should have the permissions configured correctly for writting.
 
-- **EXPORT_LOCALDIRECTORY**: this is a local temp directory for generating data before the export process. You should direct data to TMP or TEMP directory or any other with the same purpose. For example, /tmp
+- **EXPORT_LOCALDIRECTORY**: this is a local temp directory for generating data before the export process. You should direct data to TMP or TEMP directory or any other with the same purpose. The default is **/tmp/**
 
-- **EXPORT_REMOTEDIRECTORY**: this is the remote directory in the S3 Bucket. Remember to check the permissions in order ServiceManager can export correctly. The final URL will be s3://[**EXPORT_BUCKET**]/[**EXPORT_REMOTEDIRECTORY**]
+- **EXPORT_REMOTEDIRECTORY**: this is the remote directory in the S3 Bucket. Remember to check the permissions in order ServiceManager can export correctly. The final URL will be s3://[**EXPORT_BUCKET**][**EXPORT_REMOTEDIRECTORY**]
 
-- **EXPORT_PURGE**: controls the behaviour of the data purge. The default is **true**. The data will be exported according the **SCHEDULER_EXPORT** variable.
+- **EXPORT_PURGE**: controls the behaviour of the data purge. The default is **true** and the data will be purged from the database after the export procedure.
 
-- **EXPORT_DAYS**: this is the days the ServiceManager will keep before exporting. If you specify 10 days, each data older than that limit will be exported to S3 bucket and then purged from Database. The local database should be used just for BAM (Business Activity Monitoring) or daily data, while older be persisted in a cheaper place such as S3 or AWS Glacier Service.
+- **EXPORT_DAYS**: this is the days the ServiceManager will keep before exporting. If you specify 10 days, each data older than that limit will be exported to S3 bucket and then purged from Database. The local database should be used just for BAM (Business Activity Monitoring) or daily data, while older be persisted in a cheaper place such as S3 or AWS Glacier Service. The default value is 1 day.
 
 
 

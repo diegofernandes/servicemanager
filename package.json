@@ -15,12 +15,9 @@
   "author": "Meccano IoT",
   "license": "GPL-3.0",
   "dependencies": {
-    "body-parser": "^1.14.2",
-    "compression": "^1.6.0",
-    "errorhandler": "^1.4.2",
-    "express": "^4.13.3",
     "morgan": "^1.6.1",
     "node-crontab": "~0.0.8",
+    "aws-sdk": "~2.2.0",
     "mysql": "^2.10.0",
     "node-yaml-config": "0.0.3",
     "s3client": "~0.1.1"
