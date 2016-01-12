@@ -29,6 +29,7 @@ var pool = require('../mysql');
 */
 exports.entrypoint = function() {
   if(config.TYPE !== "MASTER") return;
+  console.log("Exporting data to S3...");
   // Get lines to create the CSV File
   if(config.export.active) {
     pool.query('select * from IOTDB.Facts where datediff(now(), creationDate) >' + config.export.dias, createCSV);
@@ -39,9 +40,10 @@ exports.entrypoint = function() {
 * Create the CSV File
 */
 function createCSV(err, rows, fields) {
+    console.log("Creating CSV file...");
     var d = new Date();
     if (rows.length === 0) {
-      console.log("Nao existem dados para exportar...");
+      console.log("There's no data for exporting...");
       return;
     }
     var fileName = "MECCANO-" + d.getFullYear() + "-" +

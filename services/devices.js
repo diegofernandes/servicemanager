@@ -28,6 +28,7 @@ var AWS  = require('../aws');
 **/
 exports.entrypoint = function() {
   if(config.TYPE !== "MASTER") return;
+  console.log("Creating device report...");
   pool.query(config.mysql.query, createDeviceReport);
 }
 
@@ -49,6 +50,7 @@ function createDeviceReport(err, rows, fields) {
     }
   }
   console.log(text);
+  console.log("Operational device report created!");
   publishMessage(text);
 }
 
@@ -56,6 +58,7 @@ function createDeviceReport(err, rows, fields) {
 * Publish message to Amazon SNS
 */
 function publishMessage(report) {
+  console.log("Sending report to SNS topic...");
   var params = {
     Message: report,
     Subject: "Operational Report of Devices",
