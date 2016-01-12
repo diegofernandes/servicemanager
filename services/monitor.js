@@ -27,6 +27,12 @@ var http = require('http');
 */
 exports.entrypoint = function() {
   console.log("Checking the status of MIRROR instance...");
+  if(!process.env.MIRROR || process.env.PORT) {
+    console.log("Mirror instance not configured.");
+    config.TYPE = 'MASTER';
+    console.log('Changing to ' + config.TYPE);
+    return;
+  }
   var options = {
     host: process.env.MIRROR,
     port: (process.env.PORT || 8000),

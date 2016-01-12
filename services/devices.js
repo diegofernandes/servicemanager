@@ -29,18 +29,21 @@ var AWS  = require('../aws');
 exports.entrypoint = function() {
   if(config.TYPE !== "MASTER") return;
   console.log("Creating device report...");
-  pool.query(config.mysql.query, createDeviceReport);
+  var query = "select * from `IOTDB`.`Announcement` where datediff(now(), lastAnnouncementDate) > " + config.warninglimit;
+  pool.query(query, createDeviceReport);
 }
 
 /**
 * Create Text of Report
 **/
 function createDeviceReport(err, rows, fields) {
+  console.log("Creating device report...");
   if(err) {
     console.log("Report not created.");
     return;
   }
   if (rows.length === 0) {
+    console.log("No devices on warning/fail status.");
     return;
   }
   var text = "Report of devices in warning or fail status: \n";
