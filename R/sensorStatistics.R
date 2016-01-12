@@ -1,54 +1,56 @@
 #!/usr/bin/env Rscript
-# Carregar bibliotecas
-library('yaml')
+
+# Test if packages are installed, otherwise install it
+list.of.packages <- c("RMySQL")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages, repos='http://cran.us.r-project.org')
+
+# Load Libraries
 library('RMySQL')
 
-# Carregar arquivo yaml de configuração
-config <- yaml.load_file('../servicemanager.yml')
+USER <- Sys.getenv("MYSQL_USER")
+PASSWORD <-Sys.getenv("MYSQL_PASSWORD")
+DATABASE <- Sys.getenv("MYSQL_DATABASE")
+HOST <- Sys.getenv("MYSQL_HOST")
+PORT <- as.numeric(Sys.getenv("MYSQL_PORT"))
 
-USUARIO <- config$default$mysql$user
-SENHA <-config$default$mysql$password
-DATABASE <- config$default$mysql$database
-SERVIDOR <- config$default$mysql$host
-PORTA <- config$default$mysql$port
-
-db <- dbConnect(MySQL(), user = USUARIO, password = SENHA, dbname=DATABASE, host=SERVIDOR, port=PORTA)
-rsSensores <- dbSendQuery(db, 'select distinct idDevice, idSensor from IOTDB.Fatos where idSensor is not null')
-listaSensores <- fetch(rsSensores)
-numSensores <- nrow(listaSensores)
-print(listaSensores)
-# Limpar tabela
-dbGetQuery(db, "DELETE FROM IOTDB.Estatisticas")
-for (s in 1:numSensores) {
-  querySensor <- paste("select dados from IOTDB.Fatos where idDevice =", listaSensores[s,]$idDevice, " and idSensor =", listaSensores[s,]$idSensor, sep = " ")
+db <- dbConnect(MySQL(), user = USER, password = PASSWORD, dbname=DATABASE, host=HOST, port=PORT)
+rsSensors <- dbSendQuery(db, 'select distinct device, sensor from IOTDB.Facts where sensor is not null')
+sensorList <- fetch(rsSensors)
+sensorCount <- nrow(sensorList)
+print(sensorList)
+# Clean Table
+dbGetQuery(db, "DELETE FROM IOTDB.DeviceStatistics")
+for (s in 1:sensorCount) {
+  querySensor <- paste("select data from IOTDB.Facts where device = '", sensorList[s,]$device, "' and sensor =", sensorList[s,]$sensor, sep = "")
   print(querySensor)
-  rsDadosSensor <- dbSendQuery(db, querySensor)
-  dadosSensor <- fetch(rsDadosSensor)
-  tamanhoAmostra <- nrow(dadosSensor)
-  # print(dadosSensor)
-  dbClearResult(rsDadosSensor)
-  media <- mean(dadosSensor$dados)
-  desvio_padrao <- sd(dadosSensor$dados)
-  erro_padrao <- desvio_padrao / sqrt(tamanhoAmostra)
-  print(paste("Tamanho Amostra: ", tamanhoAmostra))
-  print(paste("Media: ", media))
-  print(paste("Desvio: ", desvio_padrao))
-  print(paste("Erro Padrao: ", erro_padrao))
+  rsSensorData <- dbSendQuery(db, querySensor)
+  sensorData <- fetch(rsSensorData)
+  sampleSize <- nrow(sensorData)
+  dbClearResult(rsSensorData)
+  avg <- mean(sensorData$data)
+  stdev <- sd(sensorData$data)
+  stderr <- stdev / sqrt(sampleSize)
+  print(paste("Sample size : ", sampleSize))
+  print(paste("Mean / Avg  : ", avg))
+  print(paste("Std. Dev    : ", stdev))
+  print(paste("Std. Error  : ", stderr))
   insert <- paste(
-    "INSERT INTO IOTDB.Estatisticas (idDevice, idSensor, media, desvio, erro, creationDate) VALUES (",
-    listaSensores[s,]$idDevice,
+    "INSERT INTO IOTDB.DeviceStatistics (device, sensor, average, deviation, error, creationDate) VALUES (",
+    "'", sensorList[s,]$device, "'",
     ",",
-    listaSensores[s,]$idSensor,
+    sensorList[s,]$sensor,
     ",",
-    media,
+    avg,
     ",",
-    desvio_padrao,
+    stdev,
     ",",
-    erro_padrao,
+    stderr,
     ",",
-    "now())")
+    "now())", sep="")
   print(insert)
   dbGetQuery(db, insert);
 }
 
 dbDisconnect(db)
+q()
