@@ -39,7 +39,7 @@ console.log('Meccano IoT ServiceManager started monitoring at %d, in %s mode', c
 var monitor = require('./services/monitor.js');
 var devices = require('./services/devices.js');
 var statistics = require('./services/statistics.js');
-var data_export = require('./services/devices.js');
+var data_export = require('./services/data_export.js');
 
 // Schedule service jobs
 crontab.scheduleJob(config.scheduler.monitor, monitor.entrypoint);
