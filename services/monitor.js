@@ -39,13 +39,13 @@ exports.entrypoint = function() {
       resposta += chunk;
     });
     response.on('end', function () {
-      if(resposta == 'SLAVE') {
-        if(config.TYPE == 'SLAVE') {
+      if(resposta === 'SLAVE') {
+        if(config.TYPE === 'SLAVE') {
             config.TYPE = 'MASTER';
             console.log('Changing to ' + config.TYPE);
         }
       }
-      if(resposta == 'MASTER') {
+      if(resposta === 'MASTER') {
         config.TYPE = 'SLAVE';
         console.log('Changing to ' + config.TYPE);
       }

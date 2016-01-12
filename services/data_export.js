@@ -22,12 +22,13 @@
 var config  = require('../config');
 var fs = require('fs');
 var S3Client = require('s3client');
+var pool = require('../mysql');
 
 /*
 * Export Data entrypoint
 */
 exports.entrypoint = function() {
-  if(config.TYPE != "MASTER") return;
+  if(config.TYPE !== "MASTER") return;
   // Get lines to create the CSV File
   if(config.export.active) {
     pool.query('select * from IOTDB.Facts where datediff(now(), creationDate) >' + config.export.dias, createCSV);
@@ -39,7 +40,7 @@ exports.entrypoint = function() {
 */
 function createCSV(err, rows, fields) {
     var d = new Date();
-    if (rows.length == 0) {
+    if (rows.length === 0) {
       console.log("Nao existem dados para exportar...");
       return;
     }
@@ -47,7 +48,7 @@ function createCSV(err, rows, fields) {
                       (d.getMonth() + 1) + "-" + d.getDate() + "-" + (d.getHours() + 1) + "-" +
                       d.getMinutes() + "-" + d.getSeconds() + ".CSV";
     console.log("Creating file " + fileName + "...");
-    for(i = 0; i < rows.length; i++) {
+    for(var i = 0; i < rows.length; i++) {
       var line = rows[i].channel + ";" + rows[i].year + ";" + rows[i].month + ";" + rows[i].day + ";" + rows[i].weekDay + ";" +
                   rows[i].hour + ";" + rows[i].minute + ";" + rows[i].second + ";" +
                   rows[i].device_group + ";" + rows[i].device + ";" + ( rows[i].sensor || 0) + ";"  +
@@ -77,7 +78,7 @@ function uploadS3(remoteFilename, fileName) {
     console.log("Checking file status...");
     if(!err) {
       // Se estiver programado para expurgar dados, realiza limpeza na base
-      if(resp.statusCode == 200) {
+      if(resp.statusCode === 200) {
         if(config.export.purge) {
           console.log("Purging old data from database...");
           pool.query('delete from IOTDB.Facts where datediff(now(), creationDate) >' + config.export.days, function(err, result) {
@@ -105,7 +106,7 @@ function uploadS3(remoteFilename, fileName) {
 * Get the filesize
 */
 function getFilesize(filename) {
-  var stats = fs.statSync(filename)
-  var fileSizeInBytes = stats["size"]
-  return fileSizeInBytes
+  var stats = fs.statSync(filename);
+  var fileSizeInBytes = stats.size;
+  return fileSizeInBytes;
 }

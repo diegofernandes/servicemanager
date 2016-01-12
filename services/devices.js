@@ -27,7 +27,7 @@ var AWS  = require('../aws');
 * Create Device Report entrypoint
 **/
 exports.entrypoint = function() {
-  if(config.TYPE != "MASTER") return;
+  if(config.TYPE !== "MASTER") return;
   pool.query(config.mysql.query, createDeviceReport);
 }
 
@@ -39,17 +39,17 @@ function createDeviceReport(err, rows, fields) {
     console.log("Report not created.");
     return;
   }
-  if (rows.length == 0) {
+  if (rows.length === 0) {
     return;
   }
   var text = "Report of devices in warning or fail status: \n";
-  for(i = 0; i < rows.length; i++) {
+  for(var i = 0; i < rows.length; i++) {
     if(rows[i].tempo_anuncio > config.limite_warning ) {
       text += rows[i].idDevice + " (" + rows[i].idLocal + ") \n";
     }
   }
   console.log(text);
-  publishMessage(textoEmail);
+  publishMessage(text);
 }
 
 /*
