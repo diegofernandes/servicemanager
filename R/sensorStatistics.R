@@ -20,9 +20,9 @@ sensorList <- fetch(rsSensors)
 sensorCount <- nrow(sensorList)
 print(sensorList)
 # Clean Table
-dbGetQuery(db, "DELETE FROM IOTDB.DeviceStatistics")
+dbGetQuery(db, "TRUNCATE `IOTDB`.`DeviceStatistics`")
 for (s in 1:sensorCount) {
-  querySensor <- paste("select data from IOTDB.Facts where device = '", sensorList[s,]$device, "' and sensor =", sensorList[s,]$sensor, sep = "")
+  querySensor <- paste("select data from `IOTDB`.`Facts` where `device` = '", sensorList[s,]$device, "' and `sensor` =", sensorList[s,]$sensor, sep = "")
   print(querySensor)
   rsSensorData <- dbSendQuery(db, querySensor)
   sensorData <- fetch(rsSensorData)
@@ -36,7 +36,7 @@ for (s in 1:sensorCount) {
   print(paste("Std. Dev    : ", stdev))
   print(paste("Std. Error  : ", stderr))
   insert <- paste(
-    "INSERT INTO IOTDB.DeviceStatistics (device, sensor, average, deviation, error, creationDate) VALUES (",
+    "INSERT INTO `IOTDB`.`DeviceStatistics` (device, sensor, average, deviation, error, creationDate) VALUES (",
     "'", sensorList[s,]$device, "'",
     ",",
     sensorList[s,]$sensor,
