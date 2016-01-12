@@ -32,7 +32,6 @@ exports.entrypoint = function() {
     port: (process.env.PORT || 8000),
     path: '/'
   };
-  console.log(options);
   var callback = function(response) {
     var resposta = '';
     response.on('data', function (chunk) {
