@@ -40,6 +40,7 @@ function createDeviceReport(err, rows, fields) {
   console.log("Creating device report...");
   if(err) {
     console.log("Report not created.");
+    console.log(err);
     return;
   }
   if (rows.length === 0) {

@@ -32,7 +32,7 @@ exports.entrypoint = function() {
   console.log("Exporting data to S3...");
   // Get lines to create the CSV File
   if(config.export.active) {
-    mysql.pool.query('select * from `IOTDB`.`Facts` where datediff(now(), creationDate) >' + config.export.dias, createCSV);
+    mysql.pool.query('select * from `IOTDB`.`Facts` where datediff(now(), creationDate) >' + config.export.days, createCSV);
   }
 }
 
