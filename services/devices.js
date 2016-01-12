@@ -20,7 +20,7 @@
 'use strict';
 
 var config  = require('../config');
-var pool  = require('../mysql');
+var mysql  = require('../mysql');
 var AWS  = require('../aws');
 
 /**
@@ -30,7 +30,7 @@ exports.entrypoint = function() {
   if(config.TYPE !== "MASTER") return;
   console.log("Creating device report...");
   var query = "select * from `IOTDB`.`Announcement` where datediff(now(), lastAnnouncementDate) > " + config.warninglimit;
-  pool.query(query, createDeviceReport);
+  mysql.pool.query(query, createDeviceReport);
 }
 
 /**

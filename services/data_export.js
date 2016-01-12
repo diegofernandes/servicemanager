@@ -22,7 +22,7 @@
 var config  = require('../config');
 var fs = require('fs');
 var S3Client = require('s3client');
-var pool = require('../mysql');
+var mysql = require('../mysql');
 
 /*
 * Export Data entrypoint
@@ -32,7 +32,7 @@ exports.entrypoint = function() {
   console.log("Exporting data to S3...");
   // Get lines to create the CSV File
   if(config.export.active) {
-    pool.query('select * from IOTDB.Facts where datediff(now(), creationDate) >' + config.export.dias, createCSV);
+    mysql.pool.query('select * from `IOTDB`.`Facts` where datediff(now(), creationDate) >' + config.export.dias, createCSV);
   }
 }
 
@@ -83,7 +83,7 @@ function uploadS3(remoteFilename, fileName) {
       if(resp.statusCode === 200) {
         if(config.export.purge) {
           console.log("Purging old data from database...");
-          pool.query('delete from IOTDB.Facts where datediff(now(), creationDate) >' + config.export.days, function(err, result) {
+          mysql.pool.query('delete from `IOTDB`.`Facts` where datediff(now(), `creationDate`) >' + config.export.days, function(err, result) {
             if(err) {
              console.log("Error on purging data...");
              console.log(err);
