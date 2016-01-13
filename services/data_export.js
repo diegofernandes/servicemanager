@@ -31,9 +31,11 @@ exports.entrypoint = function() {
   if(config.TYPE !== "MASTER") return;
   console.log("Exporting data to S3...");
   // Get lines to create the CSV File
-  if(config.export.active) {
+  if(config.export.enabled) {
     console.log("Exporting data older than " + config.export.days + " days...");
-    mysql.pool.query('select * from `IOTDB`.`Facts` where datediff(now(), creationDate) >' + config.export.days, createCSV);
+    mysql.pool.query('select * from `IOTDB`.`Facts` where datediff(now(), `creationDate`) >' + (config.export.days - 1), createCSV);
+  } else {
+    console.log("Export feature disabled.");
   }
 }
 
@@ -52,7 +54,7 @@ function createCSV(err, rows, fields) {
                       d.getMinutes() + "-" + d.getSeconds() + ".CSV";
     console.log("Creating file " + fileName + "...");
     for(var i = 0; i < rows.length; i++) {
-      var line = rows[i].channel + ";" + rows[i].year + ";" + rows[i].month + ";" + rows[i].day + ";" + rows[i].weekDay + ";" +
+      var line = rows[i].channel + ";" + rows[i].year + ";" + rows[i].month + ";" + rows[i].day + ";" + rows[i].week_day + ";" +
                   rows[i].hour + ";" + rows[i].minute + ";" + rows[i].second + ";" +
                   rows[i].device_group + ";" + rows[i].device + ";" + ( rows[i].sensor || 0) + ";"  +
                   rows[i].data + "\n";
@@ -84,7 +86,7 @@ function uploadS3(remoteFilename, fileName) {
       if(resp.statusCode === 200) {
         if(config.export.purge) {
           console.log("Purging old data from database...");
-          mysql.pool.query('delete from `IOTDB`.`Facts` where datediff(now(), `creationDate`) >' + config.export.days, function(err, result) {
+          mysql.pool.query('delete from `IOTDB`.`Facts` where datediff(now(), `creationDate`) >' + (config.export.days - 1), function(err, result) {
             if(err) {
              console.log("Error on purging data...");
              console.log(err);

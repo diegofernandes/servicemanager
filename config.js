@@ -52,7 +52,7 @@ process.env.MYSQL_PASSWORD = process.env.MYSQL_PASSWORD || conf.mysql.password;
 process.env.MYSQL_DATABASE = process.env.MYSQL_DATABASE || conf.mysql.database;
 process.env.MYSQL_CONNECTIONLIMIT = process.env.MYSQL_CONNECTIONLIMIT || conf.mysql.connectionLimit;
 
-process.env.EXPORT_ACTIVE = process.env.EXPORT_ACTIVE || conf.export.active || true;
+process.env.EXPORT_ENABLED = process.env.EXPORT_ENABLED || conf.export.enabled || true;
 process.env.EXPORT_BUCKET = process.env.EXPORT_BUCKET || conf.export.bucket;
 process.env.EXPORT_LOCALDIRECTORY = process.env.EXPORT_LOCALDIRECTORY || conf.export.localDirectory || '/tmp/';
 process.env.EXPORT_REMOTEDIRECTORY = process.env.EXPORT_REMOTEDIRECTORY || conf.export.remoteDirectory;
