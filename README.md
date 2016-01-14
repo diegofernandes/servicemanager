@@ -35,11 +35,12 @@ Meccano IoT ServiceManager performs several maintenance tasks, such as
  mkdir /app
  cd /app
  git clone https://github.com/meccano-iot/servicemanager.git
+ cd servicemanager
  npm install
 
  # Install and Configure R application
  yum -y install R
- cd /app/R
+ cd /app/servicemanager/R
  chmod a+x *.R
 
 
@@ -55,7 +56,7 @@ Meccano IoT ServiceManager performs several maintenance tasks, such as
  echo "export PORT=80" >> ~/.bash_profile
 
  # Execute Meccano IoT ServiceManager
- cd /app
+ cd /app/servicemanager
  npm start
  ```
 
