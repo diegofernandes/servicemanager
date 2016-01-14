@@ -1,0 +1,43 @@
+{
+  "name": "meccano-iot-servicemanager",
+  "version": "1.0.0",
+  "description": "Meccano IoT ServiceManager is the maintenance module of Meccano IoT Platform.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "meccano",
+    "iot",
+    "servicemanager"
+  ],
+  "author": "Meccano IoT",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "morgan": "^1.6.1",
+    "node-crontab": "~0.0.8",
+    "aws-sdk": "~2.2.0",
+    "mysql": "^2.10.0",
+    "node-yaml-config": "0.0.3",
+    "s3client": "~0.1.1"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-env": "^0.4.4",
+    "grunt-mocha-test": "^0.12.7",
+    "mocha": "^2.3.3",
+    "should": "^7.1.0",
+    "supertest": "^1.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meccano-iot/servicemanager"
+  },
+  "bugs": {
+    "url": "https://github.com/meccano-iot/servicemanager/issues"
+  },
+  "homepage": "https://github.com/meccano-iot/servicemanager"
+}
