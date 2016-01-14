@@ -35,11 +35,12 @@ Meccano IoT ServiceManager performs several maintenance tasks, such as
  mkdir /app
  cd /app
  git clone https://github.com/meccano-iot/servicemanager.git
+ cd servicemanager
  npm install
 
  # Install and Configure R application
  yum -y install R
- cd /app/R
+ cd /app/servicemanager/R
  chmod a+x *.R
 
 
@@ -55,7 +56,7 @@ Meccano IoT ServiceManager performs several maintenance tasks, such as
  echo "export PORT=80" >> ~/.bash_profile
 
  # Execute Meccano IoT ServiceManager
- cd /app
+ cd /app/servicemanager
  npm start
  ```
 
@@ -178,7 +179,7 @@ The parameters bellow control the connection and behaviour of the export and pur
   *Single Instance Mode*: it's the simpliest mode of operation. Just install the ServiceManager, start it and you are ready to go.
 
   ```
-  cd /app/
+  cd /app/servicemanager
   npm start
   ```
 
@@ -203,7 +204,7 @@ The parameters bellow control the connection and behaviour of the export and pur
   c) Next, you'll need to start your master. It can be both INSTANCE-A or INSTANCE-B. There is no difference between them. We'll assume INSTANCE-A is the main/master, so we'll start it first:
 
   ```
-  cd /app/
+  cd /app/servicemanager
   npm start
   ```
 
@@ -212,7 +213,7 @@ The parameters bellow control the connection and behaviour of the export and pur
   d) Finally, you'll need to connect the slave node. As we've already promoted INSTANCE-A to MASTER, we'll start INSTANCE-B as slave.
 
   ```
-  cd /app/
+  cd /app/servicemanager
   npm start
   ```
 
