@@ -38,6 +38,11 @@ Meccano IoT ServiceManager performs several maintenance tasks, such as
  cd servicemanager
  npm install
 
+ # Set the environment variables
+ # AWS_ACCESSKEYDI, AWS_SECRETACCESSKEY, MYSQL_HOST, MYSQL_PORT ...
+ # or configure the ./config/config.yml file.
+ # See the documentation below for more details.
+
  # Install and Configure R application
  yum -y install R
  cd /app/servicemanager/R
