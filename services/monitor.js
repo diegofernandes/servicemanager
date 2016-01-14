@@ -27,7 +27,7 @@ var http = require('http');
 */
 exports.entrypoint = function() {
   console.log("Checking the status of MIRROR instance...");
-  if(!process.env.MIRROR || process.env.PORT) {
+  if(!process.env.MIRROR) {
     console.log("Mirror instance not configured.");
     config.TYPE = 'MASTER';
     console.log('Changing to ' + config.TYPE);
@@ -38,6 +38,7 @@ exports.entrypoint = function() {
     port: (process.env.PORT || 8000),
     path: '/'
   };
+  console.log(options);
   var callback = function(response) {
     var resposta = '';
     response.on('data', function (chunk) {
