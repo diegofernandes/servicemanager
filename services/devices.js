@@ -21,7 +21,7 @@
 
 var config  = require('../config');
 var mysql  = require('../mysql');
-var AWS  = require('../aws');
+var amazon  = require('../aws');
 
 /**
 * Create Device Report entrypoint
@@ -29,7 +29,8 @@ var AWS  = require('../aws');
 exports.entrypoint = function() {
   if(config.TYPE !== "MASTER") return;
   console.log("Creating device report...");
-  var query = "select * from `IOTDB`.`Announcement` where datediff(now(), lastAnnouncementDate) > " + config.warninglimit;
+  var query = "select device, timestampdiff(MINUTE, `lastAnnouncementDate`, now()) as announcement_time from `IOTDB`.`Announcement`";
+  console.log(query);
   mysql.pool.query(query, createDeviceReport);
 }
 
@@ -49,11 +50,10 @@ function createDeviceReport(err, rows, fields) {
   }
   var text = "Report of devices in warning or fail status: \n";
   for(var i = 0; i < rows.length; i++) {
-    if(rows[i].tempo_anuncio > config.limite_warning ) {
-      text += rows[i].idDevice + " (" + rows[i].idLocal + ") \n";
+    if(rows[i].announcement_time > config.warninglimit ) {
+      text += rows[i].device + ": " + rows[i].announcement_time + " minutes. \n";
     }
   }
-  console.log(text);
   console.log("Operational device report created!");
   publishMessage(text);
 }
@@ -68,8 +68,8 @@ function publishMessage(report) {
     Subject: "Operational Report of Devices",
     TopicArn: config.aws.topicArn
   };
-  var sns = new AWS.SNS();
   console.log(params);
+  var sns = new amazon.AWS.SNS();
   sns.publish(params, function(err, data) {
     if (err) console.log(err, err.stack); // an error occurred
     else     console.log(data);           // successful response

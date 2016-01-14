@@ -44,6 +44,11 @@ exports.entrypoint = function() {
 */
 function createCSV(err, rows, fields) {
     console.log("Creating CSV file...");
+    if(err) {
+      console.log("Error creating file.");
+      console.log(err);
+      return;
+    }
     var d = new Date();
     if (rows.length === 0) {
       console.log("There's no data for exporting...");

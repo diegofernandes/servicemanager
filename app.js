@@ -43,6 +43,6 @@ var data_export = require('./services/data_export.js');
 
 // Schedule service jobs
 crontab.scheduleJob(config.scheduler.monitor, monitor.entrypoint);
-// crontab.scheduleJob(config.scheduler.devices, devices.entrypoint);
-// crontab.scheduleJob(config.scheduler.statistics, statistics.entrypoint);
+crontab.scheduleJob(config.scheduler.devices, devices.entrypoint);
+crontab.scheduleJob(config.scheduler.statistics, statistics.entrypoint);
 crontab.scheduleJob(config.scheduler.export, data_export.entrypoint);

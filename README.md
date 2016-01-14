@@ -100,6 +100,9 @@ Each configuration parameter have the corresponding environment variable. They'l
 
 ### Environment variables
 
+
+#### General parameters
+
 - **WARNINGLIMIT**: the number of minutes to create the device report. Every n minutes the report will be created and sent by e-mail for administrators. It depends on your monitoring needs.
 
 - **SCHEDULER_MONITOR**: this is the CRON string for configuring the monitor, the time both instances should check who is the MASTER or SLAVE. This should be 1 minute or more, depending on your configuration. Since ServiceManager is not a critical component in  Meccano IoT Architecture, it may be offline for some minutes until the SLAVE takes over the task and promote itself to MASTER. The default value is executing this check every minute.
@@ -145,6 +148,7 @@ The parameters bellow control the connection and behaviour of the RDBMS.
 - **MYSQL_DATABASE**: database name or instance id.
 
 - **MYSQL_CONNECTIONLIMIT**: maximum number of connections.
+
 
 
 #### Export / Purge configuration

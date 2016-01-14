@@ -31,7 +31,7 @@ var conf = yamlConfig.load(process.env.CONFIG_FILE, process.env.NODE_ENV);
 process.env.PORT = process.env.PORT || conf.port || 8000;
 process.env.ADDRESS = process.env.ADDRESS || conf.address;
 
-process.env.WARNINGLIMIT = process.env.WARNINGLIMIT || conf.warminglimit || 60;
+process.env.WARNINGLIMIT = process.env.WARNINGLIMIT || conf.warninglimit || 60;
 process.env.TZ = process.env.TZ ||  conf.timezone || 'Brazil/East';
 
 process.env.SCHEDULER_MONITOR = process.env.SCHEDULER_MONITOR || conf.scheduler.monitor || '*/1 * * * *';
@@ -103,7 +103,7 @@ conf.environment = process.env.NODE_ENV;
 conf.port = process.env.PORT;
 conf.address = process.env.ADDRESS;
 conf.timezone = process.env.TZ;
-conf.warninglimit = process.env.WARMINGLIMIT;
+conf.warninglimit = process.env.WARNINGLIMIT;
 conf.scheduler.monitor = process.env.SCHEDULER_MONITOR;
 conf.scheduler.devices = process.env.SCHEDULER_DEVICES;
 conf.scheduler.statistics = process.env.SCHEDULER_STATISTICS;
@@ -119,6 +119,7 @@ conf.mysql.user = process.env.MYSQL_USER;
 conf.mysql.password = process.env.MYSQL_PASSWORD;
 conf.mysql.database = process.env.MYSQL_DATABASE;
 conf.mysql.connectionLimit = process.env.MYSQL_CONNECTIONLIMIT;
+
 conf.export.enabled = process.env.EXPORT_ENABLED;
 conf.export.bucket = process.env.EXPORT_BUCKET;
 conf.export.localDirectory = process.env.EXPORT_LOCALDIRECTORY;
