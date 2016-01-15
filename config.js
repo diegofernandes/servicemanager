@@ -89,7 +89,7 @@ console.log("MYSQL_PASSWORD: *****");
 console.log("MYSQL_DATABASE: " + process.env.MYSQL_DATABASE);
 console.log("MYSQL_CONNECTIONLIMIT: " + process.env.MYSQL_CONNECTIONLIMIT);
 console.log("===");
-console.log("EXPORT_ACTIVE: " + process.env.EXPORT_ACTIVE);
+console.log("EXPORT_ENABLED: " + process.env.EXPORT_ENABLED);
 console.log("EXPORT_BUCKET: " + process.env.EXPORT_BUCKET);
 console.log("EXPORT_LOCALDIRECTORY: " + process.env.EXPORT_LOCALDIRECTORY);
 console.log("EXPORT_REMOTEDIRECTORY: " + process.env.EXPORT_REMOTEDIRECTORY);

@@ -29,7 +29,7 @@ var amazon  = require('../aws');
 exports.entrypoint = function() {
   if(config.TYPE !== "MASTER") return;
   console.log("Creating device report...");
-  var query = "select device, timestampdiff(MINUTE, `lastAnnouncementDate`, now()) as announcement_time from `IOTDB`.`Announcement`";
+  var query = "select device, timestampdiff(MINUTE, `lastAnnouncementDate`, now()) as announcement_time from `IOTDB`.`Announcement` where timestampdiff(MINUTE, `lastAnnouncementDate`, now()) > 0";
   console.log(query);
   mysql.pool.query(query, createDeviceReport);
 }
@@ -44,7 +44,7 @@ function createDeviceReport(err, rows, fields) {
     console.log(err);
     return;
   }
-  if (rows.length === 0) {
+  if (!rows || rows.length === 0) {
     console.log("No devices on warning/fail status.");
     return;
   }
