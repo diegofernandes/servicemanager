@@ -38,6 +38,11 @@ Meccano IoT ServiceManager performs several maintenance tasks, such as
  cd servicemanager
  npm install
 
+ # Set the environment variables
+ # AWS_ACCESSKEYDI, AWS_SECRETACCESSKEY, MYSQL_HOST, MYSQL_PORT ...
+ # or configure the ./config/config.yml file.
+ # See the documentation below for more details.
+
  # Install and Configure R application
  yum -y install R
  cd /app/servicemanager/R
@@ -171,7 +176,7 @@ The parameters bellow control the connection and behaviour of the export and pur
 
 
 
-## Architecture
+## Single and Failover Architecture
 
   - Meccano IoT ServiceManager can operate in two modes: *Single Instance Mode* or *Failover Mode*.
 
@@ -218,6 +223,7 @@ The parameters bellow control the connection and behaviour of the export and pur
   ```
 
   Wait some minutes until INSTANCE-B will be promoted to SLAVE. The console will show the status.
+  We recomend you set up the MIRROR and PORT variables in each instance in ./bash_profile of the user (Linux) or as  permanent/system environment variables in Windows Systems.
 
 
 The MASTER and SLAVE status may alternate between both instances (INSTANCE-A, INSTANCE-B), depending on the availability of the MASTER, load or network connectivity. You may also create each instance in one different AWS Region, for example, INSTANCE-A in sa-east-1 and INSTANCE-B in sa-east-2 (just configure the *AWS_REGION* environment variable or yaml file). If you also need better availability, the database should also be configured for Multi-AZ.
