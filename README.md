@@ -58,7 +58,7 @@ Meccano IoT ServiceManager performs several maintenance tasks, such as
  # We'll include the variables in the bash_profile.
  #
  echo "export MIRROR=other_instance_host_name_or_ip" >> ~/.bash_profile
- echo "export PORT=80" >> ~/.bash_profile
+ echo "export PORT=8000" >> ~/.bash_profile
 
  # Execute Meccano IoT ServiceManager
  cd /app/servicemanager
@@ -196,14 +196,14 @@ The parameters bellow control the connection and behaviour of the export and pur
 
   ```
   export MIRROR=INSTANCE-B
-  export PORT=80
+  export PORT=8000
   ```
 
   b) Next, you'll do the same for INSTANCE-B. You'll do the regular configuration described in this document, plus the configuration of environment:
 
   ```
   export MIRROR=INSTANCE-A
-  export PORT=80
+  export PORT=8000
   ```
 
   c) Next, you'll need to start your master. It can be both INSTANCE-A or INSTANCE-B. There is no difference between them. We'll assume INSTANCE-A is the main/master, so we'll start it first:
