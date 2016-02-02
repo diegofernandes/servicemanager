@@ -94,6 +94,7 @@ default:
     devices: '*/10 * * * *'
     statistics: '* 0 * * *'
     export: '* 2 * * *'
+    historyStatus: '*/1 * * * *'
   aws:
     region: 'sa-east-1'
     accessKeyId: '****************'
@@ -132,6 +133,8 @@ Each configuration parameter have the corresponding environment variable. They'l
 - **SCHEDULER_STATISTICS**: this is the CRON string for generating the sensor statistics. The default value is every 0 hour of each day.
 
 - **SCHEDULER_EXPORT**: this is the CRON schedule for exporting and purging data out of the Meccano infrastructure. The purged data may be exported to S3 bucket in order for executing Map Reduce (Hadoop) or Spark reductions or other processing for realtime analytics, BI and reports. The default is 02:00 AM of each day.
+
+- **SCHEDULER_HISTORYSTATUS**: this will create the history status of the devices, for webconsole. The default value is 1 minute.
 
 
 

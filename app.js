@@ -40,9 +40,11 @@ var monitor = require('./services/monitor.js');
 var devices = require('./services/devices.js');
 var statistics = require('./services/statistics.js');
 var data_export = require('./services/data_export.js');
+var historyStatus = require('./services/historyStatus.js');
 
 // Schedule service jobs
 crontab.scheduleJob(config.scheduler.monitor, monitor.entrypoint);
 crontab.scheduleJob(config.scheduler.devices, devices.entrypoint);
 crontab.scheduleJob(config.scheduler.statistics, statistics.entrypoint);
 crontab.scheduleJob(config.scheduler.export, data_export.entrypoint);
+crontab.scheduleJob(config.scheduler.historyStatus, historyStatus.entrypoint);
