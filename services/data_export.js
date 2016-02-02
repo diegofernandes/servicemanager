@@ -89,7 +89,8 @@ function uploadS3(remoteFilename, fileName) {
     if(!err) {
       // Se estiver programado para expurgar dados, realiza limpeza na base
       if(resp.statusCode === 200) {
-        if(config.export.purge) {
+        console.log(config.export.purge);
+        if(config.export.purge === "true") {
           console.log("Purging old data from database...");
           mysql.pool.query('delete from `IOTDB`.`Facts` where datediff(now(), `creationDate`) >' + (config.export.days - 1), function(err, result) {
             if(err) {
