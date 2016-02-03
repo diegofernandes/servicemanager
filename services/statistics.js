@@ -28,6 +28,7 @@ var exec = require('child_process').exec;
 */
 exports.entrypoint = function() {
   if(config.TYPE !== "MASTER") return;
+  console.log("Generating Sensor Statistics...");
   exec("./sensorStatistics.R", {cwd: './R/'}, function(error, stdout, stderr) {
     console.log(error);
     console.log(stdout);
