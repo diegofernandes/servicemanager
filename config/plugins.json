@@ -1,0 +1,32 @@
+[
+  {
+    "plugin": "sensorStatistics",
+    "engine": "R",
+    "enabled": true,
+    "schedule": "* 0 * * *"
+  },
+  {
+    "plugin": "forecast-day",
+    "engine": "R",
+    "enabled": false,
+    "schedule": "*/1 * * *"
+  },
+  {
+    "plugin": "devices",
+    "engine": "node",
+    "enabled": true,
+    "schedule": "*/10 * * * *"
+  },
+  {
+    "plugin": "data_export",
+    "engine": "node",
+    "enabled": true,
+    "schedule": "* 2 * * *"
+  },
+  {
+    "plugin": "historyStatus",
+    "engine": "node",
+    "enabled": true,
+    "schedule": "*/1 * * *"
+  }
+]

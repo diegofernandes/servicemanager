@@ -33,13 +33,7 @@ process.env.ADDRESS = process.env.ADDRESS || conf.address;
 
 process.env.WARNINGLIMIT = process.env.WARNINGLIMIT || conf.warninglimit || 60;
 process.env.TZ = process.env.TZ ||  conf.timezone || 'Brazil/East';
-
 process.env.SCHEDULER_MONITOR = process.env.SCHEDULER_MONITOR || conf.scheduler.monitor || '*/1 * * * *';
-process.env.SCHEDULER_DEVICES = process.env.SCHEDULER_DEVICES || conf.scheduler.devices || '*/10 * * * *';
-process.env.SCHEDULER_STATISTICS = process.env.SCHEDULER_STATISTICS || conf.scheduler.statistics || '* 0 * * *';
-process.env.SCHEDULER_EXPORT = process.env.SCHEDULER_EXPORT || conf.scheduler.export || '* 2 * * *';
-process.env.SCHEDULER_HISTORYSTATUS = process.env.SCHEDULER_HISTORYSTATUS || conf.scheduler.historyStatus || '*/1 * * * *';
-
 process.env.AWS_REGION = process.env.AWS_REGION || conf.aws.region || 'sa-east-1';
 process.env.AWS_ACCESSKEYID = process.env.AWS_ACCESSKEYID || conf.aws.accessKeyId;
 process.env.AWS_SECRETACCESSKEY = process.env.AWS_SECRETACCESSKEY || conf.aws.secretAccessKey;
@@ -73,10 +67,6 @@ console.log("WARNINGLIMIT: " + process.env.WARNINGLIMIT);
 console.log("TZ: " + process.env.TZ);
 console.log("===");
 console.log("SCHEDULER_MONITOR: " + process.env.SCHEDULER_MONITOR);
-console.log("SCHEDULER_DEVICES: " + process.env.SCHEDULER_DEVICES);
-console.log("SCHEDULER_STATISTICS: " + process.env.SCHEDULER_STATISTICS);
-console.log("SCHEDULER_EXPORT: " + process.env.SCHEDULER_EXPORT);
-console.log("SCHEDULER_HISTORYSTATUS: " + process.env.SCHEDULER_HISTORYSTATUS);
 console.log("===");
 console.log("AWS_REGION: " + process.env.AWS_REGION);
 console.log("AWS_ACCESSKEYID: " + process.env.AWS_ACCESSKEYID);
@@ -107,10 +97,6 @@ conf.address = process.env.ADDRESS;
 conf.timezone = process.env.TZ;
 conf.warninglimit = process.env.WARNINGLIMIT;
 conf.scheduler.monitor = process.env.SCHEDULER_MONITOR;
-conf.scheduler.devices = process.env.SCHEDULER_DEVICES;
-conf.scheduler.statistics = process.env.SCHEDULER_STATISTICS;
-conf.scheduler.export = process.env.SCHEDULER_EXPORT;
-conf.scheduler.historyStatus = process.env.SCHEDULER_HISTORYSTATUS;
 conf.aws.region = process.env.AWS_REGION;
 conf.aws.accessKeyId = process.env.AWS_ACCESSKEYID;
 conf.aws.secretAccessKey = process.env.AWS_SECRETACCESSKEY;
