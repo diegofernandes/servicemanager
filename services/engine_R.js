@@ -22,16 +22,26 @@
 var config  = require('../config');
 var sys = require('sys');
 var exec = require('child_process').exec;
+var crontab = require('node-crontab');
 
 /*
 * Generate Sensor Data Statistics
 */
-exports.entrypoint = function() {
+exports.entrypoint = function(script) {
+  console.log("engine_R: executing entrypoint(" + script + ")");
   if(config.TYPE !== "MASTER") return;
-  console.log("Generating Sensor Statistics...");
-  exec("./sensorStatistics.R", {cwd: './R/'}, function(error, stdout, stderr) {
+  exec("./" + script + ".R", {cwd: './plugins/'}, function(error, stdout, stderr) {
     console.log(error);
     console.log(stdout);
     console.log(stderr);
   });
+}
+
+/*
+* Schedule plugin
+*/
+exports.schedule = function(schedule, scriptname) {
+  var jobId = crontab.scheduleJob(schedule, exports.entrypoint, [scriptname]);
+  console.log("engine_R: \t" + jobId + "\t" + schedule + "\t" + scriptname + ".js");
+
 }

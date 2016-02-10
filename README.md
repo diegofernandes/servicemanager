@@ -91,10 +91,6 @@ default:
   warninglimit: 60
   scheduler:
     monitor: '*/1 * * * *'
-    devices: '*/10 * * * *'
-    statistics: '* 0 * * *'
-    export: '* 2 * * *'
-    historyStatus: '*/1 * * * *'
   aws:
     region: 'sa-east-1'
     accessKeyId: '****************'
@@ -127,15 +123,6 @@ Each configuration parameter have the corresponding environment variable. They'l
 - **WARNINGLIMIT**: the number of minutes to create the device report. Every n minutes the report will be created and sent by e-mail for administrators. It depends on your monitoring needs.
 
 - **SCHEDULER_MONITOR**: this is the CRON string for configuring the monitor, the time both instances should check who is the MASTER or SLAVE. This should be 1 minute or more, depending on your configuration. Since ServiceManager is not a critical component in  Meccano IoT Architecture, it may be offline for some minutes until the SLAVE takes over the task and promote itself to MASTER. The default value is executing this check every minute.
-
-- **SCHEDULER_DEVICES**: this is the CRON string for creating the device report. It depends on your application but a good value should be 10 minutes or even a day, if you don't want to overload this component so much. The default value is every 10 minutes.
-
-- **SCHEDULER_STATISTICS**: this is the CRON string for generating the sensor statistics. The default value is every 0 hour of each day.
-
-- **SCHEDULER_EXPORT**: this is the CRON schedule for exporting and purging data out of the Meccano infrastructure. The purged data may be exported to S3 bucket in order for executing Map Reduce (Hadoop) or Spark reductions or other processing for realtime analytics, BI and reports. The default is 02:00 AM of each day.
-
-- **SCHEDULER_HISTORYSTATUS**: this will create the history status of the devices, for webconsole. The default value is 1 minute.
-
 
 
 #### AWS Configuration
@@ -190,6 +177,101 @@ The parameters bellow control the connection and behaviour of the export and pur
 
 - **EXPORT_DAYS**: this is the days the ServiceManager will keep before exporting. If you specify 10 days, each data older than that limit will be exported to S3 bucket and then purged from Database. The local database should be used just for BAM (Business Activity Monitoring) or daily data, while older be persisted in a cheaper place such as S3 or AWS Glacier Service. The default value is 1 day.
 
+
+#### Plugin Architecture
+
+The Service Manager plugin architecture executes R and node.js code. There are some out-of-the-box plugins and you may also create yours.
+
+##### Out-of-the-box plugins
+
+**Sensor Statistics**: this plugin creates the device report. It depends on your application but a good value should be 10 minutes or even a day, if you don't want to overload this component so much. The default value is every 10 minutes.
+
+**Statistics**: this plugin generates the sensor statistics. The default value is every 0 hour of each day.
+
+**Export and Purge**: this plugin exports and purges data out of the Meccano infrastructure. The purged data may be exported to S3 bucket in order for executing Map Reduce (Hadoop) or Spark reductions or other processing for realtime analytics, BI and reports. The default is 02:00 AM of each day.
+
+**History Status**: this plugin produces the history status of the devices, for webconsole. The default value is 1 minute.
+
+
+##### Configuration
+
+In the config/plugins.json you may configure your plugin. Example: if your plugin script file is sensorStatistics.R, you should put your R code in the /plugins directory and configure according the example bellow.
+
+```
+[
+  {
+    "plugin": "sensorStatistics",
+    "engine": "R",
+    "enabled": true,
+    "schedule": "* 0 * * *"
+  },
+  {
+    "plugin": "forecast-day",
+    "engine": "R",
+    "enabled": false,
+    "schedule": "*/1 * * *"
+  },
+  {
+    "plugin": "devices",
+    "engine": "node",
+    "enabled": true,
+    "schedule": "*/10 * * * *"
+  },
+  {
+    "plugin": "data_export",
+    "engine": "node",
+    "enabled": true,
+    "schedule": "* 2 * * *"
+  },
+  {
+    "plugin": "historyStatus",
+    "engine": "node",
+    "enabled": true,
+    "schedule": "*/1 * * *"
+  }
+]
+```
+
+##### Creating New Plugin
+
+If you want to create a plugin, you should follow the step:
+
+###### node.js plugin
+
+The mininum plugin configuration for node.js is:
+
+```
+var config  = require('../config');
+var mysql  = require('../mysql');
+var amazon  = require('../aws');
+
+*
+* Export Data entrypoint
+*/
+exports.entrypoint = function() {
+  if(config.TYPE !== "MASTER") return;
+  // Your plugin code here
+}
+```
+
+###### R plugin
+
+The mininum R plugin configuration is bellow. You should change the permission of this file to 755 (chmod a+x yourfile.R)
+
+```
+#!/usr/bin/env Rscript
+# Load Libraries
+library('RMySQL')
+USER <- Sys.getenv("MYSQL_USER")
+PASSWORD <-Sys.getenv("MYSQL_PASSWORD")
+DATABASE <- Sys.getenv("MYSQL_DATABASE")
+HOST <- Sys.getenv("MYSQL_HOST")
+PORT <- as.numeric(Sys.getenv("MYSQL_PORT"))
+db <- dbConnect(MySQL(), user = USER, password = PASSWORD, dbname=DATABASE, host=HOST, port=PORT)
+# Your R code here
+dbDisconnect(db)
+q()
+```
 
 
 
