@@ -6,7 +6,7 @@
     "schedule": "* 0 * * *"
   },
   {
-    "plugin": "forecast_day",
+    "plugin": "forecastDayRegression",
     "engine": "R",
     "enabled": false,
     "schedule": "* 0 * * *"
