@@ -6,10 +6,10 @@
     "schedule": "* 0 * * *"
   },
   {
-    "plugin": "forecast-day",
+    "plugin": "forecast_day",
     "engine": "R",
     "enabled": false,
-    "schedule": "*/1 * * *"
+    "schedule": "* 0 * * *"
   },
   {
     "plugin": "devices",
