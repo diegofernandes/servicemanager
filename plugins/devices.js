@@ -49,13 +49,20 @@ function createDeviceReport(err, rows, fields) {
     return;
   }
   var text = "Report of devices in warning or fail status: \n";
+  var failedDevices = 0;
   for(var i = 0; i < rows.length; i++) {
     if(rows[i].announcement_time > config.warninglimit ) {
       text += rows[i].device + ": " + rows[i].announcement_time + " minutes. \n";
+      failedDevices++;
     }
   }
-  console.log("Operational device report created!");
-  publishMessage(text);
+
+  if(failedDevices > 0) {
+    console.log("Operational device report created!");
+    publishMessage(text);
+  } else {
+    console.log("Operational device report skipped! - No devices in FAIL status.");
+  }
 }
 
 /*

@@ -188,9 +188,11 @@ The Service Manager plugin architecture executes R and node.js code. There are s
 
 **Statistics**: this plugin generates the sensor statistics. The default value is every 0 hour of each day.
 
-**Export and Purge**: this plugin exports and purges data out of the Meccano infrastructure. The purged data may be exported to S3 bucket in order for executing Map Reduce (Hadoop) or Spark reductions or other processing for realtime analytics, BI and reports. The default is 02:00 AM of each day.
+**Export and Purge**: this plugin exports and purges data out of the Meccano infrastructure. The purged data may be exported to S3 bucket in order for executing Map Reduce (Hadoop) or Spark reductions or other processing for realtime analytics, BI and reports. This plugin is enabled and the default is 02:00 AM of each day.
 
-**History Status**: this plugin produces the history status of the devices, for webconsole. The default value is 1 minute.
+**History Status**: this plugin produces the history status of the devices, for webconsole. This plugin is enabled and The default value is 1 minute.
+
+**Forecast Day (Polynomial Regression Algorithm)**: this plugin runs a polynomial regression algorithm to estimate the data for the next days. It should be useful depending on your application. This plugin is disabled by default. The number of days for estimation is defined by environment variable FORECAST_DAYS. For a 7 day forecast, you should set FORECAST_DAYS=7. The data will be created in MySQL Database, table Forecast_Day. Note: if you are planning to forecast a week you should configure the Export and Purge Plugin accordingly, defining the data retention for weeks or more, depending on your needs.
 
 
 ##### Configuration
@@ -206,7 +208,7 @@ In the config/plugins.json you may configure your plugin. Example: if your plugi
     "schedule": "* 0 * * *"
   },
   {
-    "plugin": "forecast-day",
+    "plugin": "forecastDayRegression",
     "engine": "R",
     "enabled": false,
     "schedule": "*/1 * * *"
@@ -251,6 +253,7 @@ var amazon  = require('../aws');
 exports.entrypoint = function() {
   if(config.TYPE !== "MASTER") return;
   // Your plugin code here
+  // ...
 }
 ```
 
@@ -262,13 +265,21 @@ The mininum R plugin configuration is bellow. You should change the permission o
 #!/usr/bin/env Rscript
 # Load Libraries
 library('RMySQL')
+
+# Get the environment variables
 USER <- Sys.getenv("MYSQL_USER")
 PASSWORD <-Sys.getenv("MYSQL_PASSWORD")
 DATABASE <- Sys.getenv("MYSQL_DATABASE")
 HOST <- Sys.getenv("MYSQL_HOST")
 PORT <- as.numeric(Sys.getenv("MYSQL_PORT"))
+
+# Connect to the database
 db <- dbConnect(MySQL(), user = USER, password = PASSWORD, dbname=DATABASE, host=HOST, port=PORT)
+
 # Your R code here
+#...
+
+# Disconnect from DB
 dbDisconnect(db)
 q()
 ```
