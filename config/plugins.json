@@ -27,6 +27,6 @@
     "plugin": "historyStatus",
     "engine": "node",
     "enabled": true,
-    "schedule": "*/1 * * *"
+    "schedule": "*/10 * * * *"
   }
 ]
