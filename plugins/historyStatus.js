@@ -30,11 +30,8 @@ exports.entrypoint = function() {
   if(config.TYPE !== "MASTER") return;
   console.log("Generating device history status...");
   var sql = "insert into `DeviceHistoryStatus` (status, numberOfDevices) ";
-  sql += "select 'NORMAL' as `status`, count(*) as `numberOfDevices` from `Announcement` where timestampdiff(minute, `lastAnnouncementDate`, now()) <= ? ";
-  sql += "union select 'WARNING' as `status`, count(*) as `numberOfDevices` from `Announcement` where timestampdiff(minute, `lastAnnouncementDate`, now()) between ? and ? ";
-  sql += "union select 'FAIL' as `status`, count(*) as `numberOfDevices` from `Announcement` where timestampdiff(minute, `lastAnnouncementDate`, now()) > ? ";
-  sql += "union select 'WAITING_APPROVE' as `status`, count(*) as `numberOfDevices` from `Registration` where `device_group` is null ";
-  mysql.pool.query(sql, [5, 6, 15, 15], function(error, result, fields) {
+  sql += "SELECT status, count(*) as numberOfDevices FROM IOTDB.DeviceStatus group by status ";
+  mysql.pool.query(sql, [], function(error, result, fields) {
     var purge = "delete from `DeviceHistoryStatus` where timestampdiff(hour, `creationDate`, now()) > 4 ";
     mysql.pool.query(purge)  ;
   });
