@@ -29,8 +29,7 @@ var amazon  = require('../aws');
 exports.entrypoint = function() {
   if(config.TYPE !== "MASTER") return;
   console.log("Generating device history status...");
-  var sql = "insert into `DeviceHistoryStatus` (status, numberOfDevices) ";
-  sql += "SELECT status, count(*) as numberOfDevices FROM IOTDB.DeviceStatus group by status ";
+  var sql = "insert into `DeviceHistoryStatus` (status, numberOfDevices) SELECT status, count(*) as numberOfDevices FROM IOTDB.DeviceStatus group by status ";
   mysql.pool.query(sql, [], function(error, result, fields) {
     var purge = "delete from `DeviceHistoryStatus` where timestampdiff(hour, `creationDate`, now()) > 4 ";
     mysql.pool.query(purge)  ;
