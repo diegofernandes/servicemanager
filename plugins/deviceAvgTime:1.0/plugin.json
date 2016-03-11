@@ -2,7 +2,7 @@
   "plugin" : "deviceAvgTime:1.0",
   "engine" : "R",
   "enabled" : true,
-  "schedule" : "*/1 * * * *",
+  "schedule" : "*/15 * * * *",
   "description" : "Device Average Response Time",
   "type" : "report",
   "executionContext" : "both"
