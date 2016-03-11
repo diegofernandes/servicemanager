@@ -27,10 +27,11 @@ var crontab = require('node-crontab');
 /*
 * Generate Sensor Data Statistics
 */
-exports.entrypoint = function(script) {
-  console.log("engine_python: executing entrypoint(" + script + ")");
-  if(config.TYPE !== "MASTER") return;
-  exec("./" + script + ".py", {cwd: './plugins/' + script + "/"}, function(error, stdout, stderr) {
+exports.entrypoint = function(metadata) {
+  console.log("engine_python: executing entrypoint(" + metadata.plugin + ")");
+  if(config.TYPE !== "MASTER" && metadata.executionContext == "master" ) return;
+  exec("./" + metadata.plugin + ".py", {cwd: './plugins/' + metadata.plugin + "/"},
+    function(error, stdout, stderr) {
     console.log(error);
     console.log(stdout);
     console.log(stderr);
@@ -40,7 +41,7 @@ exports.entrypoint = function(script) {
 /*
 * Schedule plugin
 */
-exports.schedule = function(schedule, scriptname) {
-  var jobId = crontab.scheduleJob(schedule, exports.entrypoint, [scriptname]);
-  console.log("engine_python: \t" + jobId + "\t" + schedule + "\t" + scriptname + ".py");
+exports.schedule = function(metadata) {
+  var jobId = crontab.scheduleJob(metadata.schedule, exports.entrypoint, [metadata]);
+  console.log("engine_python: \t" + jobId + "\t" + metadata.schedule + "\t" + metadata.plugin + ".py");
 }
