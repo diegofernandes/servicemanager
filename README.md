@@ -199,7 +199,10 @@ The Service Manager plugin architecture executes R and node.js code. There are s
 **Updates By Device**: this plugin creates a report with the number of updates of each device.
 
 
-##### The Anatomy of a Plugin
+
+
+
+#### The Anatomy of a Plugin
 
 You may create your own plugins to expand servicemanager and webconsole functionality. The anatomy of plugin follows, using the example of deviceAvgTime plugin. If you take a look at plugin directory, will realize that each folder is a plugin. The format is <name of plugin>:<version>:
 
