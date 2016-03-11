@@ -27,17 +27,17 @@ var crontab = require('node-crontab');
 /*
 * Generate Sensor Data Statistics
 */
-function entrypoint(script) {
-  console.log("engine_node: executing entrypoint(" + script + ")");
-  if(config.TYPE !== "MASTER") return;
-  var service = require("../plugins/" + script + "/" + script + ".js" );
-  service.entrypoint(script);
+function entrypoint(metadata) {
+  console.log("engine_node: executing entrypoint(" + metadata.plugin + ")");
+  if(config.TYPE !== "MASTER" && metadata.executionContext == "master" ) return;
+  var service = require("../plugins/" + metadata.plugin + "/" + metadata.plugin + ".js" );
+  service.entrypoint(metadata);
 }
 
 /*
 * Schedule plugin
 */
-exports.schedule = function(schedule, scriptname) {
-  var jobId = crontab.scheduleJob(schedule, entrypoint, [scriptname]);
-  console.log("engine_node: \t" + jobId + "\t" + schedule + "\t" + scriptname + ".js");
+exports.schedule = function(metadata) {
+  var jobId = crontab.scheduleJob(metadata.schedule, entrypoint, [metadata]);
+  console.log("engine_node: \t" + jobId + "\t" + metadata.schedule + "\t" + metadata.plugin + ".js");
 }

@@ -4,5 +4,6 @@
   "enabled" : false,
   "schedule" : "* 0 * * *",
   "description" : "Create a day forecast using polynomial regression method",
-  "type" : "worker"
+  "type" : "worker",
+  "executionContext" : "master"
 }

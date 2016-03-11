@@ -21,7 +21,7 @@
 
 library(RMySQL)
 
-config.database.dbname <- Sys.getenv("MYSQL_DBNAMNE")
+config.database.dbname <- Sys.getenv("MYSQL_DATABASE")
 config.database.host <- Sys.getenv("MYSQL_HOST")
 config.database.port <- as.numeric(Sys.getenv("MYSQL_PORT"))
 config.database.user <- Sys.getenv("MYSQL_USER")
@@ -44,6 +44,10 @@ v <- fetch(rs, n=10000)
 dbDisconnect(conn)
 setwd("./assets/")
 png('output.png')
-barplot(v$numupdates, names.arg = v$device, xlab = "devices", ylab="average response time")
+mp <- barplot(v$numupdates, 
+        names.arg = v$device, 
+        xlab = "devices", 
+        ylab="number of updates (un.)")
+text(mp, v$numupdates, labels = v$numupdates, pos = 1)
 dev.off()
 q()

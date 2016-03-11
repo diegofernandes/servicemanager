@@ -4,5 +4,6 @@
   "enabled" : true,
   "schedule" : "*/10 * * * *",
   "description" : "Create and send report of devices in FAIL status",
-  "type" : "worker"
+  "type" : "worker",
+  "executionContext" : "master"
 }

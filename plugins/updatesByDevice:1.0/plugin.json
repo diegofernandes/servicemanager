@@ -2,7 +2,8 @@
   "plugin" : "updatesByDevice:1.0",
   "engine" : "R",
   "enabled" : true,
-  "schedule" : "* */1 * * *",
+  "schedule" : "*/1 * * * *",
   "description" : "Number of Updates By Device",
-  "type" : "report"
+  "type" : "report",
+  "executionContext" : "both"
 }

@@ -21,7 +21,7 @@
 
 library(RMySQL)
 
-config.database.dbname <- Sys.getenv("MYSQL_DBNAMNE")
+config.database.dbname <- Sys.getenv("MYSQL_DATABASE")
 config.database.host <- Sys.getenv("MYSQL_HOST")
 config.database.port <- as.numeric(Sys.getenv("MYSQL_PORT"))
 config.database.user <- Sys.getenv("MYSQL_USER")
@@ -39,11 +39,15 @@ summary(conn)
 
 # Carregar dados de visitacao diaria do Redshift
 print("Reading training data...")
-rs <- dbSendQuery(conn, "SELECT device, timestampdiff(SECOND, min(creationDate), max(creationDate)) / (count(creationDate) - 1) as avgtime FROM Facts group by device order by avgtime")
+rs <- dbSendQuery(conn, "SELECT device, round(timestampdiff(SECOND, min(creationDate), max(creationDate)) / (count(creationDate) - 1),0) as avgtime FROM Facts group by device order by avgtime")
 v <- fetch(rs, n=10000)
 dbDisconnect(conn)
 setwd("./assets/")
 png('output.png')
-barplot(v$avgtime, names.arg = v$device, xlab = "devices", ylab="average response time")
+mp <- barplot(v$avgtime, 
+        names.arg = v$device, 
+        xlab = "devices", 
+        ylab="average response time (seconds)")
+text(mp, v$avgtime, labels = v$avgtime, pos = 1)
 dev.off()
 q()

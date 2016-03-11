@@ -4,5 +4,6 @@
   "enabled" : true,
   "schedule" : "*/10 * * * *",
   "description" : "Create the History Status for Webconsole",
-  "type" : "worker"
+  "type" : "worker",
+  "executionContext" : "master"
 }

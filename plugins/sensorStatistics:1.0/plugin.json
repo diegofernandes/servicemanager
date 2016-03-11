@@ -4,5 +4,6 @@
   "enabled" : true,
   "schedule" : "* 0 * * *",
   "description" : "Statistical data for sensors",
-  "type" : "worker"
+  "type" : "worker",
+  "executionContext" : "master"
 }
