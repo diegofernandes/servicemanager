@@ -39,19 +39,18 @@ conn <- dbConnect(MySQL(),
 )
 summary(conn)
 
-# Carregar dados de visitacao diaria do Redshift
+# Load sensor data from DB for training
 print("Reading training data...")
 rs <- dbSendQuery(conn, "SELECT * FROM Facts order by creationDate desc LIMIT 10000")
 v <- fetch(rs, n=10000)
 
-# Selecionar filiais
+# Select distinct groups
 groups <- unique(v$device_group)
 numGroups <- length(groups)
 
 # Cleaning the Forecast_Day table
 dbSendQuery(conn, "delete from Forecast_Day")
 dbCommit(conn)
-
 
 # Creates the model and forecast for each device_group
 for(f in 1:numGroups) {

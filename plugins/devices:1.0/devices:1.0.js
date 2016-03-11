@@ -19,9 +19,9 @@
 
 'use strict';
 
-var config  = require('../config');
-var mysql  = require('../mysql');
-var amazon  = require('../aws');
+var config  = require('../../config');
+var mysql  = require('../../mysql');
+var amazon  = require('../../aws');
 
 /**
 * Create Device Report entrypoint

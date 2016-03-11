@@ -1,0 +1,8 @@
+{
+  "plugin" : "deviceAvgTime:1.0",
+  "engine" : "R",
+  "enabled" : true,
+  "schedule" : "*/1 * * * *",
+  "description" : "Device Average Response Time",
+  "type" : "report"
+}

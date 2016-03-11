@@ -1,0 +1,8 @@
+{
+  "plugin" : "sensorStatistics:1.0",
+  "engine" : "R",
+  "enabled" : true,
+  "schedule" : "* 0 * * *",
+  "description" : "Statistical data for sensors",
+  "type" : "worker"
+}

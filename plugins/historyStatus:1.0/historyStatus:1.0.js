@@ -19,29 +19,19 @@
 
 'use strict';
 
-var config  = require('../config');
-var sys = require('sys');
-var exec = require('child_process').exec;
-var crontab = require('node-crontab');
+var config  = require('../../config');
+var mysql  = require('../../mysql');
+var amazon  = require('../../aws');
 
-/*
-* Generate Sensor Data Statistics
-*/
-exports.entrypoint = function(script) {
-  console.log("engine_R: executing entrypoint(" + script + ")");
+/**
+* Create Device Report entrypoint
+**/
+exports.entrypoint = function() {
   if(config.TYPE !== "MASTER") return;
-  exec("./" + script + ".R", {cwd: './plugins/' + script + "/"}, function(error, stdout, stderr) {
-    console.log(error);
-    console.log(stdout);
-    console.log(stderr);
+  console.log("Generating device history status...");
+  var sql = "insert into `DeviceHistoryStatus` (status, numberOfDevices) SELECT status, count(*) as numberOfDevices FROM IOTDB.DeviceStatus group by status ";
+  mysql.pool.query(sql, [], function(error, result, fields) {
+    var purge = "delete from `DeviceHistoryStatus` where timestampdiff(hour, `creationDate`, now()) > 4 ";
+    mysql.pool.query(purge)  ;
   });
-}
-
-/*
-* Schedule plugin
-*/
-exports.schedule = function(schedule, scriptname) {
-  var jobId = crontab.scheduleJob(schedule, exports.entrypoint, [scriptname]);
-  console.log("engine_R: \t" + jobId + "\t" + schedule + "\t" + scriptname + ".js");
-
 }

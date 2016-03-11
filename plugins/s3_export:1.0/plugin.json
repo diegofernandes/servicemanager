@@ -1,0 +1,8 @@
+{
+  "plugin" : "s3_export:1.0",
+  "engine" : "node",
+  "enabled" : true,
+  "schedule" : "* 2 * * *",
+  "description" : "Export data to Amazon-S3 service",
+  "type" : "stream"
+}
