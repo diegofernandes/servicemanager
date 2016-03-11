@@ -27,3 +27,7 @@ build/Release
 node_modules
 
 plugins/deviceAvgTime:1.0/assets/output.png
+
+plugins/updatesByDevice:1.0/assets/output.png
+
+plugins/feedbackDemo:1.0/assets/output.png

@@ -1,0 +1,9 @@
+{
+  "plugin" : "feedbackDemo:1.0",
+  "engine" : "R",
+  "enabled" : true,
+  "schedule" : "*/1 * * * *",
+  "description" : "Create report for feedback application (DEMO)",
+  "type" : "report",
+  "executionContext" : "both"
+}
