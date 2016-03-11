@@ -4,5 +4,6 @@
   "enabled" : true,
   "schedule" : "* 2 * * *",
   "description" : "Export data to Amazon-S3 service",
-  "type" : "stream"
+  "type" : "stream",
+  "executionContext" : "master"
 }

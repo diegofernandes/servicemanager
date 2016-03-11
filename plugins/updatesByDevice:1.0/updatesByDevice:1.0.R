@@ -39,15 +39,15 @@ summary(conn)
 
 # Carregar dados de visitacao diaria do Redshift
 print("Reading training data...")
-rs <- dbSendQuery(conn, "SELECT device, round(timestampdiff(SECOND, min(creationDate), max(creationDate)) / (count(creationDate) - 1),0) as avgtime FROM Facts group by device order by avgtime")
+rs <- dbSendQuery(conn, "SELECT device, count(*) as numupdates FROM Facts group by device order by numupdates")
 v <- fetch(rs, n=10000)
 dbDisconnect(conn)
 setwd("./assets/")
 png('output.png')
-mp <- barplot(v$avgtime, 
+mp <- barplot(v$numupdates, 
         names.arg = v$device, 
         xlab = "devices", 
-        ylab="average response time (seconds)")
-text(mp, v$avgtime, labels = v$avgtime, pos = 1)
+        ylab="number of updates (un.)")
+text(mp, v$numupdates, labels = v$numupdates, pos = 1)
 dev.off()
 q()

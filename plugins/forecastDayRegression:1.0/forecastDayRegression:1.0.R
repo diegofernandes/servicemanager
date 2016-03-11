@@ -22,7 +22,7 @@
 library(RMySQL)
 library(lubridate)
 
-config.database.dbname <- Sys.getenv("MYSQL_DBNAMNE")
+config.database.dbname <- Sys.getenv("MYSQL_DATABASE")
 config.database.host <- Sys.getenv("MYSQL_HOST")
 config.database.port <- as.numeric(Sys.getenv("MYSQL_PORT"))
 config.database.user <- Sys.getenv("MYSQL_USER")

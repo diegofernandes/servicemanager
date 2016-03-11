@@ -54,15 +54,15 @@ for(var p = 0; p < numberOfPlugins; p++) {
   }
   // R Engine
   if(metaData.engine == "R") {
-    engine_R.schedule(metaData.schedule, metaData.plugin);
+    engine_R.schedule(metaData);
   }
   // Python Engine
   if(metaData.engine == "python") {
-    engine_python.schedule(metaData.schedule, metaData.plugin);
+    engine_python.schedule(metaData);
   }
   // Node Engine
   if(metaData.engine == "node") {
-    engine_node.schedule(metaData.schedule, metaData.plugin);
+    engine_node.schedule(metaData);
   }
   // Create static route for the assets of the plugin...
   var route = "/plugins/" + metaData.plugin.replace(':', '/') + "/assets/";
