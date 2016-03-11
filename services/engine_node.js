@@ -30,7 +30,7 @@ var crontab = require('node-crontab');
 function entrypoint(script) {
   console.log("engine_node: executing entrypoint(" + script + ")");
   if(config.TYPE !== "MASTER") return;
-  var service = require("../plugins/" + script + ".js" );
+  var service = require("../plugins/" + script + "/" + script + ".js" );
   service.entrypoint(script);
 }
 

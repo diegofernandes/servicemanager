@@ -19,10 +19,10 @@
 
 'use strict';
 
-var config  = require('../config');
 var fs = require('fs');
 var S3Client = require('s3client');
-var mysql = require('../mysql');
+var config  = require('../../config');
+var mysql = require('../../mysql');
 
 /*
 * Export Data entrypoint
@@ -64,7 +64,7 @@ function createCSV(err, rows, fields) {
                   rows[i].device_group + ";" + rows[i].device + ";" + ( rows[i].sensor || 0) + ";"  +
                   rows[i].data + "\n";
       // console.log(linha);
-      fs.appendFileSync("/tmp/" + fileName, line);
+      fs.appendFileSync(config.export.localDirectory + fileName, line);
     }
     console.log("File creation successful...");
     // Uploading file to S3

@@ -20,7 +20,8 @@
     "aws-sdk": "~2.2.0",
     "mysql": "^2.10.0",
     "node-yaml-config": "0.0.3",
-    "s3client": "~0.1.1"
+    "s3client": "~0.1.1",
+    "express": "~4.13.4"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

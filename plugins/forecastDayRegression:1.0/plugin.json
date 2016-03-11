@@ -1,0 +1,8 @@
+{
+  "plugin" : "forecastDayRegression:1.0",
+  "engine" : "R",
+  "enabled" : false,
+  "schedule" : "* 0 * * *",
+  "description" : "Create a day forecast using polynomial regression method",
+  "type" : "worker"
+}

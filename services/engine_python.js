@@ -20,18 +20,27 @@
 'use strict';
 
 var config  = require('../config');
-var mysql  = require('../mysql');
-var amazon  = require('../aws');
+var sys = require('sys');
+var exec = require('child_process').exec;
+var crontab = require('node-crontab');
 
-/**
-* Create Device Report entrypoint
-**/
-exports.entrypoint = function() {
+/*
+* Generate Sensor Data Statistics
+*/
+exports.entrypoint = function(script) {
+  console.log("engine_python: executing entrypoint(" + script + ")");
   if(config.TYPE !== "MASTER") return;
-  console.log("Generating device history status...");
-  var sql = "insert into `DeviceHistoryStatus` (status, numberOfDevices) SELECT status, count(*) as numberOfDevices FROM IOTDB.DeviceStatus group by status ";
-  mysql.pool.query(sql, [], function(error, result, fields) {
-    var purge = "delete from `DeviceHistoryStatus` where timestampdiff(hour, `creationDate`, now()) > 4 ";
-    mysql.pool.query(purge)  ;
+  exec("./" + script + ".py", {cwd: './plugins/' + script + "/"}, function(error, stdout, stderr) {
+    console.log(error);
+    console.log(stdout);
+    console.log(stderr);
   });
+}
+
+/*
+* Schedule plugin
+*/
+exports.schedule = function(schedule, scriptname) {
+  var jobId = crontab.scheduleJob(schedule, exports.entrypoint, [scriptname]);
+  console.log("engine_python: \t" + jobId + "\t" + schedule + "\t" + scriptname + ".py");
 }

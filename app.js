@@ -21,36 +21,43 @@
 
 var http = require('http');
 var crontab = require('node-crontab');
+var express = require('express');
+var app = express();
 
 // Set the environment, location of the config file and load configuration
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 process.env.CONFIG_FILE = process.env.CONFIG_FILE ||  './config/config.yml';
 var config  = require('./config');
-var engine_R = require('./services/engine_R.js');
-var engine_node = require('./services/engine_node.js');
 
-
-// Starting monitoring PORT
-var server = http.createServer(function (request, response) {
-  response.writeHead(200, {"Content-Type": "text/plain"});
-  response.end(config.TYPE);
+app.get('/', function (req, res) {
+  res.set('Content-Type', 'text/plain');
+  res.status(200).send(config.TYPE);
 });
-server.listen(config.port);
-console.log('Meccano IoT ServiceManager started monitoring at %d, in %s mode', config.port, config.environment);
 
-// Load Service Plugins
+app.use('/plugins/assets', express.static('./plugins/assets'));
+
+app.listen(config.port, function () {
+  console.log('Meccano IoT ServiceManager started monitoring at %d, in %s mode', config.port, config.environment);
+});
+
+// Load/Schedule Service Plugins
 var monitor = require('./services/monitor.js');
-/*
-var devices = require('./services/devices.js');
-var statistics = require('./services/statistics.js');
-var data_export = require('./services/data_export.js');
-var historyStatus = require('./services/historyStatus.js');
-*/
-
 console.log("Scheduling the monitor...");
 crontab.scheduleJob(config.scheduler.monitor, monitor.entrypoint);
 
-// Schedule plugin configuration
+module.exports = app;
+
+
+// Scan Plugins
+var scanPlugins = require('./services/scanPlugins.js');
+
+
+/*
+var engine_R = require('./services/engine_R.js');
+var engine_node = require('./services/engine_node.js');
+var engine_python = require('./services/engine_python.js');
+
+// Schedule user plugins and reports
 console.log("Loading plugins...");
 var pluginConfiguration = require('./config/plugins.json');
 for(var p = 0; p < pluginConfiguration.length ; p++) {
@@ -60,20 +67,13 @@ for(var p = 0; p < pluginConfiguration.length ; p++) {
   if(plugin.engine == "R") {
     engine_R.schedule(plugin.schedule, plugin.plugin);
   }
+  // Python Engine
+  if(plugin.engine == "python") {
+    engine_python.schedule(plugin.schedule, plugin.plugin);
+  }
   // Node Engine
   if(plugin.engine == "node") {
     engine_node.schedule(plugin.schedule, plugin.plugin);
   }
 }
-
-// Schedule service jobs
-/*
-console.log("Scheduling the device...");
-crontab.scheduleJob(config.scheduler.devices, devices.entrypoint);
-console.log("Scheduling the statistics...");
-crontab.scheduleJob(config.scheduler.statistics, statistics.entrypoint);
-console.log("Scheduling the export...");
-crontab.scheduleJob(config.scheduler.export, data_export.entrypoint);
-console.log("Scheduling the history status...");
-crontab.scheduleJob(config.scheduler.historyStatus, historyStatus.entrypoint);
 */
