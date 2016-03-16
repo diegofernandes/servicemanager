@@ -39,7 +39,7 @@ summary(conn)
 
 # Carregar dados de visitacao diaria do Redshift
 print("Reading training data...")
-rs <- dbSendQuery(conn, "select 'good' as feedback, count(*) as votes from Facts where channel = 'feedback' and data = 100 union select 'average' as feedback, count(*) as votes from Facts where channel = 'feedback' and data = 50 union select 'bad' as feedback, count(*) as votes from Facts where channel = 'feedback' and data = -100
+rs <- dbSendQuery(conn, "select 'bad' as feedback, count(*) as votes from Facts where channel = 'feedback' and data = -100 union select 'average' as feedback, count(*) as votes from Facts where channel = 'feedback' and data = 50 union select 'good' as feedback, count(*) as votes from Facts where channel = 'feedback' and data = 100
 ")
 v <- fetch(rs)
 dbDisconnect(conn)
