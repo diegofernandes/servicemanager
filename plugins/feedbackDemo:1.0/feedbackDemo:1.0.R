@@ -49,7 +49,7 @@ mp <- barplot(v$votes,
         names.arg = v$feedback,
         xlab = "feedback",
         ylab="number of votes (un.)",
-        col = c("darkolivegreen3", "goldenrod", "firebrick"))
+        col = c("firebrick", "goldenrod", "darkolivegreen3"))
 text(mp, v$votes, labels = v$votes, pos = 1)
 dev.off()
 q()
