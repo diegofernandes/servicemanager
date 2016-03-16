@@ -68,7 +68,7 @@ for(var p = 0; p < numberOfPlugins; p++) {
   var route = "/plugins/" + metaData.plugin.replace(':', '/') + "/assets/";
   console.log("Creating static routes...");
   app.use("/plugins/"+ metaData.plugin.replace(':', '/'), express.static(__dirname + "/../plugins/" + metaData.plugin));
-  app.use(route, express.static(__dirname + "/../plugins/" + metaData.plugin + "/assets"));
+  app.use(route, express.static(__dirname + "/../plugins/" + metaData.plugin + "/assets", {maxAge: 0}));
   console.log("");
 }
 
