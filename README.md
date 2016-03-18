@@ -43,9 +43,14 @@ Meccano IoT ServiceManager performs several maintenance tasks, such as
  exit
 
  # Install
- sudo yum -y install git
+ # check the version of NodeJs that will be installed. Required is 4.0+
+ # ubuntu: sudo apt-get update ; sudo apt-get install git nodejs npm mysql-client libmysqlclient-dev
+ # centos/rh
+ sudo yum -y install git mysql-devel
  sudo yum -y install nodejs npm --enablerepo=epel
- sudo yum -y install mysql-devel
+ # update the npm
+ sudo npm install -g npm
+
  git clone https://github.com/meccano-iot/servicemanager.git
  cd servicemanager
  npm install
@@ -56,13 +61,21 @@ Meccano IoT ServiceManager performs several maintenance tasks, such as
  # See the documentation below for more details.
 
  # Install R and configure plugins
+ # centos/rh
  yum -y install R
+ # ubuntu: apt-get install r-base r-base-dev
  cd plugins
+ # centos/rh
  chmod -R a+x *.R
+ # ubuntu: chmod a+x $(find -name *.R)
 
  # Install Python and configure plugins
+ # centos/rh
  yum install -y python
+ # ubuntu: apt-get install python
+ # centos/rh
  chmod -R a+x *.py
+ # ubuntu: chmod a+x $(find -name *.py)
 
  # If Operating in Failover Mode, you should configure the environment variables.
  # More details bellow and in the architecture session.
@@ -78,6 +91,62 @@ Meccano IoT ServiceManager performs several maintenance tasks, such as
  # Execute Meccano IoT ServiceManager
  npm start
  ```
+
+## Installation of R plugins
+
+#### RMySQL
+
+```
+$ sudo R
+
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+...
+Type 'q()' to quit R.
+
+> install.packages('RMySQL')
+...
+--- Please select a CRAN mirror for use in this session ---
+No protocol specified
+CRAN mirror
+
+  1: 0-Cloud [https]                 2: 0-Cloud                     
+  3: Algeria                         4: Argentina (La Plata)        
+  5: Australia (Canberra)            6: Australia (Melbourne)       
+  7: Austria [https]                 8: Austria                     
+  9: Belgium (Antwerp)              10: Belgium (Ghent) [https]     
+ 11: Belgium (Ghent)                12: Brazil (BA)                 
+ 13: Brazil (PR)                    14: Brazil (RJ)                 
+ 15: Brazil (SP 1)                  16: Brazil (SP 2)               
+
+Selection: 102
+also installing the dependency ‘DBI’
+
+trying URL 'http://cran.cnr.berkeley.edu/src/contrib/DBI_0.3.1.tar.gz'
+Content type 'application/x-gzip' length 30106 bytes (29 Kb)
+opened URL
+==================================================
+downloaded 29 Kb
+
+trying URL 'http://cran.cnr.berkeley.edu/src/contrib/RMySQL_0.10.8.tar.gz'
+Content type 'application/x-gzip' length 52126 bytes (50 Kb)
+opened URL
+==================================================
+downloaded 50 Kb
+
+...
+** R
+** preparing package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+
+> q()
+Save workspace image? [y/n/c]: n
+```
+
 
 ## Configuration
 
@@ -176,6 +245,7 @@ The parameters bellow control the connection and behaviour of the export and pur
 - **EXPORT_PURGE**: controls the behaviour of the data purge. The default is **true** and the data will be purged from the database after the export procedure.
 
 - **EXPORT_DAYS**: this is the days the ServiceManager will keep before exporting. If you specify 10 days, each data older than that limit will be exported to S3 bucket and then purged from Database. The local database should be used just for BAM (Business Activity Monitoring) or daily data, while older be persisted in a cheaper place such as S3 or AWS Glacier Service. The default value is 1 day.
+
 
 
 #### Plugin Architecture
