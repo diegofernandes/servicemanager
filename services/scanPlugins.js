@@ -16,14 +16,13 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 */
+'use strict';
 
 var express = require('express');
 var app = require('../app.js');
 var engine_R = require('../services/engine_R.js');
 var engine_node = require('../services/engine_node.js');
 var engine_python = require('../services/engine_python.js');
-
-'use strict';
 
 var pluginMetaData = [];
 
@@ -53,15 +52,15 @@ for(var p = 0; p < numberOfPlugins; p++) {
     continue;
   }
   // R Engine
-  if(metaData.engine == "R") {
+  if(metaData.engine === "R") {
     engine_R.schedule(metaData);
   }
   // Python Engine
-  if(metaData.engine == "python") {
+  if(metaData.engine === "python") {
     engine_python.schedule(metaData);
   }
   // Node Engine
-  if(metaData.engine == "node") {
+  if(metaData.engine === "node") {
     engine_node.schedule(metaData);
   }
   // Create static route for the assets of the plugin...
