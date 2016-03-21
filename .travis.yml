@@ -1,0 +1,46 @@
+language: node_js
+cache:
+  apt: true
+  directories:
+  - node_modules
+node_js:
+- 4.3.1
+sudo: required
+dist: trusty
+matrix:
+  fast_finish: true
+  allow_failures:
+  - node_js: 5.1.1
+before_install:
+- sudo apt-get install -y docker mysql-server mysql-client
+- mysql -u root < sql/schema.sql
+before_script:
+- npm install -g grunt-cli
+env:
+  global:
+  - NODE_ENV: travis
+  - MYSQL_URI: mysql://root@localhost:3306/IOTDB
+  - COMMIT: "${TRAVIS_COMMIT::8}"
+  - secure: l00rTMf7v49cXMz1vT3rXI1LLKZn7vrdbzhnr0tCThZ1bAvXE6Sk4whHezM4O9CD48633nmBkJsU/RtkKm7FcIgK5vPbUbbkwbelEPvFu5zj07cDAh8kPIQ8IjVTzdzZPq8ycM7kg5tSlwHjp0tknx73ycGgfRnr5/AJgq+MA371EZAYmk4AtRhn0DjhFzwXGW4rmuiZhYMFDCFOEiWVRfC0AJVx2cS9E7zuwvOfj/UerKrHHgrWenjNJFg+9wtctcz81jVJS+C/WIZ9iGaLgk/MNau7QfeI/LTdNsE1toUgyjEny19+XpmrlP/KqRynGPatfaOynyU9sxUtKNh3JFpKGt3gH+dOUJEgZDuq9oNZeeinA4d+GX46B+brA43BDQXY4RsUp1P8WL8O5nuh/JFk/IksJTSlzsCj8chPYfoMYE2bSw/O7AyXdSs35cztzWG144/liWnDkZtBincaB60tTSiD+egbC+TQ1La5ISy4HICrvV3jOT5A02ZG8tGVKkk4iNrMZo9BAamH/pYtgiVB5LKMJdDGzCB2NoClwAYW09QuJlnoYAvX+NQgCGltH0ULxxj+AiHhab72Dmz/ONORXqvKepit6ROX9sARH8OPGAVsDvXXbqvq4dtxq2rJVVtTJUjNMDZqWXdWWXEGBGafjMKyF4E9zCFCLwNT5VA=
+  - secure: lhnMA0n/AoaT6DCnxuH/WHMhrqw6nxuDX6H0uRnfniGk+1+aZY55RTIdg5CCDmOWWoXZO20WG8X50L3TeqoqxBPL1XgiFfhRgGUSGYzgTm4HJt5Zn4MnzM4GXlUA7OBUS+GhchYVcSmbqpCKLz3/CBBsU91Cwyh7Fc6SssveTgkDdJArBnI0ent1r8zw429LdMo4vkNpXabVsW2rHT2Kr1bubEW0K04xsOFpRra5s9YVvt69lupTaUxCaHIxk4sQrBM4y/IypF7NSoKGTBSRH0bJbSolbKXMI+IqGdkn/WRBT8oL/E/U1XkDxq4egFNEUqHzfUxfgHDqM6pzbJ089ylWQSqhXYZjAztwRw0pm+0EHr7H6SBVeys4xbLCUNJL9BBQMQjVAv5QZkWVKzpB+hgE/ZrOnIJ4mif/f6+JqRe//j6qqfSEWHFCn8ihBf99hXom0suI8YerHgYS6soErFlJ9Mw8Xdu+jF8C3c+xJMWxt1SiT9stJaxlXagpguVRboB9VW98oUyydx7fSWvnGuZ/awoHzpPiwS/rfx2FuPrIiXj3qNpL4HBhN6oZp7HUBcmqasy/eUK0EqEW17KQy1JLEtXdAix09TLceHWkfPkuyVpl/+ySAHpLwO/ZMlXrlJH7BdxmwxKhzNZBerRsVCt/LzTr85aBg9qjiJZwz1Y=
+  - secure: qdBtV/nJ1M3hBOEQCP9DmBmaDVXOJiN9VHxQT7qqyf7M2HnlT4/2YvHoiYH0XXOKU4+k+R7tKNu3h94Gebs6iP++2RAvBXwsI5Ccqat0U1r3WIxMiquj7Ju3fEhFHXmOQKZf/FXwBAv6mN23PBRa+kDwc8kvEEtos2/0MN9EmdWR2cJI4u4cgg5z0p5VipRCgzA+Z9Rn1xm4zOGNELEVHsD6W/NyfSocLfujp6mVpmK78yL61tiXdcgs3RqC26m6aM+t6fEfR4XKRiZ7xVcCo5dpjUXdOKWdIBF32aMvOTeS2BUy7i4lngb13lMuwIOL2wcgsVH2P6yY1lLMwxpvuu8aCqHc4jMSH1aZgfuJc9g4vNBBcqlWCXyWywTcTYQac/3dpOiQW6tepluJfjdlRXEj2mR3G8iUaVsxe8LZxXNLsGw6TrLrN7eMpl/g+0gV4Ne8+tcWl0WRt8QIhST5dvWQPjdWGTyGtYLfBzG/GKVQBOcvQISfGApBSDykan5a38UybTDQOZzIVCq9CP0BzOTROHEqtE92v1PCaIE+yifnZ+FDNIXA7DeQvsX2DPHaaS9n9OIQQDV2prsCSWjvficSssqepV1Va2ADhshJ+6AxSrG2s6+DPkFD7kvtMgpSohEqVv6d9zOxsFr+6PrP6EfuRweJHmIDyFEktfoRAmY=
+notifications:
+  slack:
+    secure: Z9y4SAI+KCXknOZQX1+ym0/dV4G8yS5PzxdC/GdtPtp/+D3vrvr859YdLOqyvZJQlDHFSwkGFw9mvwNIuDJOkCwM3B9EGklftZHWnYSL0dBayFHwczCxidmDR4JOVk0dBuvJYhntEddB/DmuL8AkCVdIG/j2TtzHoA6jWXdbPrxUp/k5l3vZPxkqerZhDdanNiuAEDGiIWBnUY5exhLtVcjud/FD6xVQE2C3Ib0V+wb+cRgrd7wF838DQJevr+qPcBzQo4vyqARCdWNC0mobOttMU0v5EDTj5pLocDSpKjZU8VMYCttNOH5Ln+4GEmcR0ML21+oWtJ2C7hh0GoQl+TqWsVCTLSTEXwQBjjdUNskEyVg2FjsK7il7PQ4stk32Gjmwrk+1ebHMXWPD7J21KwCUdrDhWfqPMhXe+pxmlA7muQHER767ifV7SaQKVhMWj0LZyvw6ZDwQfTvqEITkyvlvwt+ZwLDSRv3TkRxVjTs7jYB4G3wVDzuOCjn38bQ6e0Uhe67ZHGLiQgdibRrk+Y5Vdr8mtXypE3iHKQehSLKWh77vjp1LAmHXm9uLflxkLLoBDksvPXO/xrFfjab8BoH0Vhc72MHqHEMXBvfVzIdxS95JGOPX3Etsr7NwDBfspJIurtFuU8EeVaxzjG64VCRQ3pUyGeJ+VhJwADQ2jIs=
+before_deploy: test $TRAVIS_TEST_RESULT = 0 && cd $TRAVIS_BUILD_DIR && tar -zcvf meccano-servicemanager-$TRAVIS_TAG.tar.gz plugins config package.json *.js services
+deploy:
+  provider: releases
+  file: meccano-servicemanager-$TRAVIS_TAG.tar.gz
+  skip_cleanup: true
+  on:
+    tags: true
+  api_key:
+    secure: mPT+xJHzKh1z7nCLhaJSq1MrQxkbxevI5sYPSbAsmXvtZg2GXai2bTO6ec5R0V2IXkuuMR3/cufUcadzJ6yjHODRzAgT0XNGX6Mx1STfQdVb7HkC7UP4FliFL+NeJ/29o3wO0SMgHHQ76k6hHOPOKdFZKwdyOZ57FatjivbpcS0frg0iEcr2LU9uxjfmtOTc1BCWdMcXSCEjP4sC+Vx0ZABtKGMgrqK8h2LJaOs7dG4HnL9Um3BcyzyQ8k6zOYVkp6h4FeymV51i3R7NqbAejnPCbrQ9QM4c70rm1kMpNTapC0Lka2UaXqkB8E+CJ4hw6bSHBPLqeLnwAQG3hg9X5OKab8vjREK2qQnrRVU8hge89EBaFG03LBcf8kf57+TZR7S8AquZNbiZFL8QPAcqIPgnsEeznSqn5Q5+WRB7mPdbqyJq+ICajPrl3+ceFryQPa9JvHNZ+hwrsviNfOQpQ9sFi1CQkJ/hdAXDP+4rBF2Ew8yQxPGzp6qTUlJy/xk8COIk/zj3ePjbdqVZdcSQkio4LaFDBSQn3Jkxhpa07UYOFlw28CdoByDY7uIjQWmDehL6azPSh0i+GqdRaJwqfe7D9hvC84sAgc5lFddQ8+OWR/14BPnKN6ke0ky1706Bpq2WPh4vBFNDsOEKEh9VPw0ZFdZEagxtO0b6q3QnweA=
+after_deploy:
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - export REPO=meccano/servicemanager
+  - docker build -f docker/Dockerfile -t $REPO:$COMMIT .
+  - docker images
+  - docker tag $REPO:$COMMIT $REPO:latest
+  - docker tag $REPO:$COMMIT $REPO:$TRAVIS_TAG
+  - docker push $REPO
