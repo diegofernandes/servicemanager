@@ -29,7 +29,7 @@ var crontab = require('node-crontab');
 */
 function entrypoint(metadata) {
   console.log("engine_node: executing entrypoint(" + metadata.plugin + ")");
-  if(config.TYPE !== "MASTER" && metadata.executionContext == "master" ) return;
+  if(config.TYPE !== "MASTER" && metadata.executionContext === "master" ) return;
   var service = require("../plugins/" + metadata.plugin + "/" + metadata.plugin + ".js" );
   service.entrypoint(metadata);
 }

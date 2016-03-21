@@ -29,7 +29,7 @@ var crontab = require('node-crontab');
 */
 exports.entrypoint = function(metadata) {
   console.log("engine_R: executing entrypoint(" + metadata.plugin + ")");
-  if(config.TYPE !== "MASTER" && metadata.executionContext == "master" ) return;
+  if(config.TYPE !== "MASTER" && metadata.executionContext === "master" ) return;
   exec("./" + metadata.plugin + ".R", {cwd: './plugins/' + metadata.plugin + "/"}, function(error, stdout, stderr) {
     console.log(error);
     console.log(stdout);
