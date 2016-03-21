@@ -1,0 +1,27 @@
+default:
+  hostname: 0.0.0.0
+  port: 8000
+  warninglimit: 60
+  timezone: Brazil/East
+  scheduler:
+    monitor: '*/1 * * * *'
+  aws:
+    region: 'sa-east-1'
+    accessKeyId: '*'
+    secretAccessKey: '*'
+    topicArn: 'arn:aws:sns:sa-east-1:99999:meccano-devicemanager'
+    sslEnabled: false
+  mysql:
+    host: 'database_address'
+    port: 3306
+    user: 'user'
+    password: 'password'
+    database: 'IOTDB'
+    connectionLimit: 10
+  export:
+    enabled: true
+    bucket: bucket_name
+    localDirectory: /tmp/
+    remoteDirectory: directory/
+    purge: true
+    days: 1
