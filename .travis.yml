@@ -13,8 +13,6 @@ matrix:
   - node_js: 5.1.1
 before_install:
 - sudo apt-get install -y docker mysql-server mysql-client
-- mysql -u root < sql/schema.sql
-before_script:
 - npm install -g grunt-cli
 env:
   global:
