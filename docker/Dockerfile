@@ -1,4 +1,4 @@
-FROM node
+FROM node:4.3.1
 
 ENV NODE_ENV=production
 ENV PORT=8000
@@ -18,9 +18,7 @@ ENV TESTS_ZERO=false
 ENV STATISTICS_SIGMA=6
 
 # Install packages
-RUN apt-get update
-RUN apt-get install -y mysql-client libmysqlclient-dev
-RUN apt-get install -y r-base r-base-dev
+RUN apt-get update && apt-get install -y mysql-client libmysqlclient-dev r-base r-base-dev
 
 # Define working directory.
 WORKDIR /app/
