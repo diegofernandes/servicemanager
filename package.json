@@ -1,6 +1,6 @@
 {
   "name": "meccano-iot-servicemanager",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Meccano IoT ServiceManager is the maintenance module of Meccano IoT Platform.",
   "main": "app.js",
   "scripts": {
