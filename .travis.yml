@@ -35,7 +35,7 @@ deploy:
     branchs: true
   api_key:
     secure: mPT+xJHzKh1z7nCLhaJSq1MrQxkbxevI5sYPSbAsmXvtZg2GXai2bTO6ec5R0V2IXkuuMR3/cufUcadzJ6yjHODRzAgT0XNGX6Mx1STfQdVb7HkC7UP4FliFL+NeJ/29o3wO0SMgHHQ76k6hHOPOKdFZKwdyOZ57FatjivbpcS0frg0iEcr2LU9uxjfmtOTc1BCWdMcXSCEjP4sC+Vx0ZABtKGMgrqK8h2LJaOs7dG4HnL9Um3BcyzyQ8k6zOYVkp6h4FeymV51i3R7NqbAejnPCbrQ9QM4c70rm1kMpNTapC0Lka2UaXqkB8E+CJ4hw6bSHBPLqeLnwAQG3hg9X5OKab8vjREK2qQnrRVU8hge89EBaFG03LBcf8kf57+TZR7S8AquZNbiZFL8QPAcqIPgnsEeznSqn5Q5+WRB7mPdbqyJq+ICajPrl3+ceFryQPa9JvHNZ+hwrsviNfOQpQ9sFi1CQkJ/hdAXDP+4rBF2Ew8yQxPGzp6qTUlJy/xk8COIk/zj3ePjbdqVZdcSQkio4LaFDBSQn3Jkxhpa07UYOFlw28CdoByDY7uIjQWmDehL6azPSh0i+GqdRaJwqfe7D9hvC84sAgc5lFddQ8+OWR/14BPnKN6ke0ky1706Bpq2WPh4vBFNDsOEKEh9VPw0ZFdZEagxtO0b6q3QnweA=
-deploy_success:
+after_deploy:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - export REPO=meccano/servicemanager
   - docker build -f docker/Dockerfile -t $REPO:$COMMIT .
